@@ -37,7 +37,6 @@
             lblExperience = new Label();
             label5 = new Label();
             lblLevel = new Label();
-            btnTest = new Button();
             SuspendLayout();
             // 
             // label1
@@ -116,22 +115,11 @@
             lblLevel.Size = new Size(0, 20);
             lblLevel.TabIndex = 8;
             // 
-            // btnTest
-            // 
-            btnTest.Location = new Point(161, 176);
-            btnTest.Name = "btnTest";
-            btnTest.Size = new Size(94, 29);
-            btnTest.TabIndex = 9;
-            btnTest.Text = "Test";
-            btnTest.UseVisualStyleBackColor = true;
-            btnTest.Click += btnTest_Click;
-            // 
             // RPG_Project
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(717, 643);
-            Controls.Add(btnTest);
             Controls.Add(lblLevel);
             Controls.Add(label5);
             Controls.Add(lblExperience);
@@ -159,6 +147,5 @@
         private Label lblExperience;
         private Label label5;
         private Label lblLevel;
-        private Button btnTest;
     }
 }
