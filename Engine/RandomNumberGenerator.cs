@@ -5,9 +5,10 @@ using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace Engine
 {
-    internal class RandomNumberGenerator
+    public static class RandomNumberGenerator
     {
         private static Random rnd = new Random();
         public static int NumberBetween(int minValue, int maxValue)
