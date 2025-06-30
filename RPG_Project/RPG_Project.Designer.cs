@@ -62,6 +62,7 @@
             label1.Size = new Size(75, 20);
             label1.TabIndex = 0;
             label1.Text = "Hit Points:";
+            label1.Click += label1_Click;
             // 
             // label2
             // 
@@ -294,6 +295,7 @@
             Controls.Add(label1);
             Name = "RPG_Project";
             Text = "Game";
+            FormClosing += RPG_Project_FormClosing;
             Load += RPG_Project_Load;
             ((System.ComponentModel.ISupportInitialize)dgvInventory).EndInit();
             ((System.ComponentModel.ISupportInitialize)dgvQuests).EndInit();
