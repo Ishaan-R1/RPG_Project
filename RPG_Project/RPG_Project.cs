@@ -280,11 +280,20 @@ public partial class RPG_Project : Form
         }
         else
         {
+            cboWeapons.SelectedIndexChanged -= cboWeapons_SelectedIndexChanged;
             cboWeapons.DataSource = weapons;
+            cboWeapons.SelectedIndexChanged += cboWeapons_SelectedIndexChanged;
             cboWeapons.DisplayMember = "Name";
             cboWeapons.ValueMember = "ID";
 
-            cboWeapons.SelectedIndex = 0;
+            if (_player.CurrentWeapon != null)
+            {
+                cboWeapons.SelectedItem = _player.CurrentWeapon;
+            }
+            else
+            {
+                cboWeapons.SelectedIndex = 0;
+            }
         }
     }
 
@@ -426,6 +435,10 @@ public partial class RPG_Project : Form
             }
         }
     }
+    private void cboWeapons_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        _player.CurrentWeapon = (Weapon)cboWeapons.SelectedItem;
+    }
     private void btnUsePotion_Click(object sender, EventArgs e)
     {
         // Get the currently selected potion from the combobox
@@ -480,6 +493,7 @@ public partial class RPG_Project : Form
         lblExperience.Text = _player.ExperiencePoints.ToString();
         lblLevel.Text = _player.Level.ToString();
     }
+
     private void ScrollToBottomOfMessages()
     {
         rtbMessages.SelectionStart = rtbMessages.Text.Length;
