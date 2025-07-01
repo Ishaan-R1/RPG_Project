@@ -24,8 +24,41 @@ public partial class RPG_Project : Form
         {
             _player = Player.CreateDefaultPlayer();
         }
+        lblHitPoints.DataBindings.Add("Text", _player, "CurrentHitPoints");
+        lblGold.DataBindings.Add("Text", _player, "Gold");
+        lblExperience.DataBindings.Add("Text", _player, "ExperiencePoints");
+        lblLevel.DataBindings.Add("Text", _player, "Level");
         MoveTo(_player.CurrentLocation);
-        UpdatePlayerStats();
+
+        dgvInventory.RowHeadersVisible = false;
+        dgvInventory.AutoGenerateColumns = false;
+        dgvInventory.DataSource = _player.Inventory;
+        dgvInventory.Columns.Add(new DataGridViewTextBoxColumn
+        {
+            HeaderText = "Name",
+            Width = 197,
+            DataPropertyName = "Description"
+        });
+        dgvInventory.Columns.Add(new DataGridViewTextBoxColumn
+        {
+            HeaderText = "Quantity",
+            DataPropertyName = "Quantity"
+        });
+
+        dgvQuests.RowHeadersVisible = false;
+        dgvQuests.AutoGenerateColumns = false;
+        dgvQuests.DataSource = _player.Quests;
+        dgvQuests.Columns.Add(new DataGridViewTextBoxColumn
+        {
+            HeaderText = "Name",
+            Width = 197,
+            DataPropertyName = "Name"
+        });
+        dgvQuests.Columns.Add(new DataGridViewTextBoxColumn
+        {
+            HeaderText = "Done?",
+            DataPropertyName = "IsCompleted"
+        });
     }
 
     private void btnNorth_Click(object sender, EventArgs e)
@@ -210,9 +243,6 @@ public partial class RPG_Project : Form
         // Refresh player's inventory list
         UpdateInventoryListInUI();
 
-        // Refresh player's quest list
-        UpdateQuestListInUI();
-
         // Refresh player's weapons combobox
         UpdateWeaponListInUI();
 
@@ -237,23 +267,6 @@ public partial class RPG_Project : Form
             {
                 dgvInventory.Rows.Add(new[] { inventoryItem.Details.Name, inventoryItem.Quantity.ToString() });
             }
-        }
-    }
-
-    private void UpdateQuestListInUI()
-    {
-        dgvQuests.RowHeadersVisible = false;
-
-        dgvQuests.ColumnCount = 2;
-        dgvQuests.Columns[0].Name = "Name";
-        dgvQuests.Columns[0].Width = 197;
-        dgvQuests.Columns[1].Name = "Done?";
-
-        dgvQuests.Rows.Clear();
-
-        foreach (PlayerQuest playerQuest in _player.Quests)
-        {
-            dgvQuests.Rows.Add(new[] { playerQuest.Details.Name, playerQuest.IsCompleted.ToString() });
         }
     }
 
