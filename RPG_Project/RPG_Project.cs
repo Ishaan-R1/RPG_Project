@@ -421,6 +421,19 @@ public partial class RPG_Project : Form
             rtbMessages.Text += Environment.NewLine;
             ScrollToBottomOfMessages();
 
+            cboWeapons.DataSource = _player.Weapons;
+            cboWeapons.DisplayMember = "Name";
+            cboWeapons.ValueMember = "Id";
+            if (_player.CurrentWeapon != null)
+            {
+                cboWeapons.SelectedItem = _player.CurrentWeapon;
+            }
+            cboWeapons.SelectedIndexChanged += cboWeapons_SelectedIndexChanged;
+            cboPotions.DataSource = _player.Potions;
+            cboPotions.DisplayMember = "Name";
+            cboPotions.ValueMember = "Id";
+            _player.PropertyChanged += PlayerOnPropertyChanged;
+
             // Move player to current location (to heal player and create a new monster to fight)
             MoveTo(_player.CurrentLocation);
         }
@@ -445,6 +458,27 @@ public partial class RPG_Project : Form
 
                 // Move player to "Home"
                 MoveTo(World.LocationByID(World.LOCATION_ID_HOME));
+            }
+        }
+    }
+    private void PlayerOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
+    {
+        if (propertyChangedEventArgs.PropertyName == "Weapons")
+        {
+            cboWeapons.DataSource = _player.Weapons;
+            if (!_player.Weapons.Any())
+            {
+                cboWeapons.Visible = false;
+                btnUseWeapon.Visible = false;
+            }
+        }
+        if (propertyChangedEventArgs.PropertyName == "Potions")
+        {
+            cboPotions.DataSource = _player.Potions;
+            if (!_player.Potions.Any())
+            {
+                cboPotions.Visible = false;
+                btnUsePotion.Visible = false;
             }
         }
     }
