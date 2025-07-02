@@ -11,10 +11,6 @@ namespace Engine
     {
         private Item _details;
         private int _quantity;
-        public string Description
-        {
-            get { return Quantity > 1 ? Details.NamePlural : Details.Name; }
-        }
         public Item Details
         {
             get { return _details; }
@@ -34,6 +30,11 @@ namespace Engine
                 OnPropertyChanged("Description");
             }
         }
+        public string Description
+        {
+            get { return Quantity > 1 ? Details.NamePlural : Details.Name; }
+        }
+
         public InventoryItem(Item details, int quantity)
         {
             Details = details;

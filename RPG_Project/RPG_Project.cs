@@ -29,6 +29,35 @@ public partial class RPG_Project : Form
         lblExperience.DataBindings.Add("Text", _player, "ExperiencePoints");
         lblLevel.DataBindings.Add("Text", _player, "Level");
         MoveTo(_player.CurrentLocation);
+
+        dgvInventory.RowHeadersVisible = false;
+        dgvInventory.AutoGenerateColumns = false;
+        dgvInventory.DataSource = _player.Inventory;
+        dgvInventory.Columns.Add(new DataGridViewTextBoxColumn
+        {
+            HeaderText = "Name",
+            Width = 197,
+            DataPropertyName = "Description"
+        });
+        dgvInventory.Columns.Add(new DataGridViewTextBoxColumn
+        {
+            HeaderText = "Quantity",
+            DataPropertyName = "Quantity"
+        });
+        dgvQuests.RowHeadersVisible = false;
+        dgvQuests.AutoGenerateColumns = false;
+        dgvQuests.DataSource = _player.Quests;
+        dgvQuests.Columns.Add(new DataGridViewTextBoxColumn
+        {
+            HeaderText = "Name",
+            Width = 197,
+            DataPropertyName = "Name"
+        });
+        dgvQuests.Columns.Add(new DataGridViewTextBoxColumn
+        {
+            HeaderText = "Done?",
+            DataPropertyName = "IsCompleted"
+        });
     }
 
     private void btnNorth_Click(object sender, EventArgs e)
