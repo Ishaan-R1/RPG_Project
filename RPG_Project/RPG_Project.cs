@@ -24,41 +24,10 @@ public partial class RPG_Project : Form
         {
             _player = Player.CreateDefaultPlayer();
         }
-        lblHitPoints.DataBindings.Add("Text", _player, "CurrentHitPoints");
-        lblGold.DataBindings.Add("Text", _player, "Gold");
-        lblExperience.DataBindings.Add("Text", _player, "ExperiencePoints");
-        lblLevel.DataBindings.Add("Text", _player, "Level");
+
         MoveTo(_player.CurrentLocation);
 
-        dgvInventory.RowHeadersVisible = false;
-        dgvInventory.AutoGenerateColumns = false;
-        dgvInventory.DataSource = _player.Inventory;
-        dgvInventory.Columns.Add(new DataGridViewTextBoxColumn
-        {
-            HeaderText = "Name",
-            Width = 197,
-            DataPropertyName = "Description"
-        });
-        dgvInventory.Columns.Add(new DataGridViewTextBoxColumn
-        {
-            HeaderText = "Quantity",
-            DataPropertyName = "Quantity"
-        });
-
-        dgvQuests.RowHeadersVisible = false;
-        dgvQuests.AutoGenerateColumns = false;
-        dgvQuests.DataSource = _player.Quests;
-        dgvQuests.Columns.Add(new DataGridViewTextBoxColumn
-        {
-            HeaderText = "Name",
-            Width = 197,
-            DataPropertyName = "Name"
-        });
-        dgvQuests.Columns.Add(new DataGridViewTextBoxColumn
-        {
-            HeaderText = "Done?",
-            DataPropertyName = "IsCompleted"
-        });
+        UpdatePlayerStats();
     }
 
     private void btnNorth_Click(object sender, EventArgs e)
@@ -87,8 +56,6 @@ public partial class RPG_Project : Form
         if (!_player.HasRequiredItemToEnterThisLocation(newLocation))
         {
             rtbMessages.Text += "You must have a " + newLocation.ItemRequiredToEnter.Name + " to enter this location." + Environment.NewLine;
-            ScrollToBottomOfMessages();
-
             return;
         }
 
@@ -139,22 +106,12 @@ public partial class RPG_Project : Form
 
                         // Give quest rewards
                         rtbMessages.Text += "You receive: " + Environment.NewLine;
-                        ScrollToBottomOfMessages();
-
                         rtbMessages.Text += newLocation.QuestAvailableHere.RewardExperiencePoints.ToString() + " experience points" + Environment.NewLine;
-                        ScrollToBottomOfMessages();
-
                         rtbMessages.Text += newLocation.QuestAvailableHere.RewardGold.ToString() + " gold" + Environment.NewLine;
-                        ScrollToBottomOfMessages();
-
                         rtbMessages.Text += newLocation.QuestAvailableHere.RewardItem.Name + Environment.NewLine;
-                        ScrollToBottomOfMessages();
-
                         rtbMessages.Text += Environment.NewLine;
-                        ScrollToBottomOfMessages();
 
-
-                        _player.ExperiencePoints += newLocation.QuestAvailableHere.RewardExperiencePoints;
+                        _player.AddExperiencePoints(newLocation.QuestAvailableHere.RewardExperiencePoints);
                         _player.Gold += newLocation.QuestAvailableHere.RewardGold;
 
                         // Add the reward item to the player's inventory
@@ -171,32 +128,20 @@ public partial class RPG_Project : Form
 
                 // Display the messages
                 rtbMessages.Text += "You receive the " + newLocation.QuestAvailableHere.Name + " quest." + Environment.NewLine;
-                ScrollToBottomOfMessages();
-
                 rtbMessages.Text += newLocation.QuestAvailableHere.Description + Environment.NewLine;
-                ScrollToBottomOfMessages();
-
                 rtbMessages.Text += "To complete it, return with:" + Environment.NewLine;
-                ScrollToBottomOfMessages();
-
                 foreach (QuestCompletionItem qci in newLocation.QuestAvailableHere.QuestCompletionItems)
                 {
                     if (qci.Quantity == 1)
                     {
                         rtbMessages.Text += qci.Quantity.ToString() + " " + qci.Details.Name + Environment.NewLine;
-                        ScrollToBottomOfMessages();
-
                     }
                     else
                     {
                         rtbMessages.Text += qci.Quantity.ToString() + " " + qci.Details.NamePlural + Environment.NewLine;
-                        ScrollToBottomOfMessages();
-
                     }
                 }
                 rtbMessages.Text += Environment.NewLine;
-                ScrollToBottomOfMessages();
-
 
                 // Add the quest to the player's quest list
                 _player.Quests.Add(new PlayerQuest(newLocation.QuestAvailableHere));
@@ -207,8 +152,6 @@ public partial class RPG_Project : Form
         if (newLocation.MonsterLivingHere != null)
         {
             rtbMessages.Text += "You see a " + newLocation.MonsterLivingHere.Name + Environment.NewLine;
-            ScrollToBottomOfMessages();
-
 
             // Make a new monster, using the values from the standard monster in the World.Monster list
             Monster standardMonster = World.MonsterByID(newLocation.MonsterLivingHere.ID);
@@ -236,18 +179,31 @@ public partial class RPG_Project : Form
             btnUsePotion.Visible = false;
         }
 
-        // Refresh stats
+        // Refresh player's stats
         UpdatePlayerStats();
-
 
         // Refresh player's inventory list
         UpdateInventoryListInUI();
+
+        // Refresh player's quest list
+        UpdateQuestListInUI();
 
         // Refresh player's weapons combobox
         UpdateWeaponListInUI();
 
         // Refresh player's potions combobox
         UpdatePotionListInUI();
+
+        ScrollToBottomOfMessages();
+    }
+
+    private void UpdatePlayerStats()
+    {
+        // Refresh player information and inventory controls
+        lblHitPoints.Text = _player.CurrentHitPoints.ToString();
+        lblGold.Text = _player.Gold.ToString();
+        lblExperience.Text = _player.ExperiencePoints.ToString();
+        lblLevel.Text = _player.Level.ToString();
     }
 
     private void UpdateInventoryListInUI()
@@ -267,6 +223,23 @@ public partial class RPG_Project : Form
             {
                 dgvInventory.Rows.Add(new[] { inventoryItem.Details.Name, inventoryItem.Quantity.ToString() });
             }
+        }
+    }
+
+    private void UpdateQuestListInUI()
+    {
+        dgvQuests.RowHeadersVisible = false;
+
+        dgvQuests.ColumnCount = 2;
+        dgvQuests.Columns[0].Name = "Name";
+        dgvQuests.Columns[0].Width = 197;
+        dgvQuests.Columns[1].Name = "Done?";
+
+        dgvQuests.Rows.Clear();
+
+        foreach (PlayerQuest playerQuest in _player.Quests)
+        {
+            dgvQuests.Rows.Add(new[] { playerQuest.Details.Name, playerQuest.IsCompleted.ToString() });
         }
     }
 
@@ -293,11 +266,20 @@ public partial class RPG_Project : Form
         }
         else
         {
+            cboWeapons.SelectedIndexChanged -= cboWeapons_SelectedIndexChanged;
             cboWeapons.DataSource = weapons;
+            cboWeapons.SelectedIndexChanged += cboWeapons_SelectedIndexChanged;
             cboWeapons.DisplayMember = "Name";
             cboWeapons.ValueMember = "ID";
 
-            cboWeapons.SelectedIndex = 0;
+            if (_player.CurrentWeapon != null)
+            {
+                cboWeapons.SelectedItem = _player.CurrentWeapon;
+            }
+            else
+            {
+                cboWeapons.SelectedIndex = 0;
+            }
         }
     }
 
@@ -336,36 +318,34 @@ public partial class RPG_Project : Form
     {
         // Get the currently selected weapon from the cboWeapons ComboBox
         Weapon currentWeapon = (Weapon)cboWeapons.SelectedItem;
+
         // Determine the amount of damage to do to the monster
         int damageToMonster = RandomNumberGenerator.NumberBetween(currentWeapon.MinimumDamage, currentWeapon.MaximumDamage);
+
         // Apply the damage to the monster's CurrentHitPoints
         _currentMonster.CurrentHitPoints -= damageToMonster;
+
         // Display message
         rtbMessages.Text += "You hit the " + _currentMonster.Name + " for " + damageToMonster.ToString() + " points." + Environment.NewLine;
-        ScrollToBottomOfMessages();
 
         // Check if the monster is dead
         if (_currentMonster.CurrentHitPoints <= 0)
         {
             // Monster is dead
             rtbMessages.Text += Environment.NewLine;
-            ScrollToBottomOfMessages();
-
             rtbMessages.Text += "You defeated the " + _currentMonster.Name + Environment.NewLine;
-            ScrollToBottomOfMessages();
 
             // Give player experience points for killing the monster
-            _player.ExperiencePoints += _currentMonster.RewardExperiencePoints;
+            _player.AddExperiencePoints(_currentMonster.RewardExperiencePoints);
             rtbMessages.Text += "You receive " + _currentMonster.RewardExperiencePoints.ToString() + " experience points" + Environment.NewLine;
-            ScrollToBottomOfMessages();
 
             // Give player gold for killing the monster 
             _player.Gold += _currentMonster.RewardGold;
             rtbMessages.Text += "You receive " + _currentMonster.RewardGold.ToString() + " gold" + Environment.NewLine;
-            ScrollToBottomOfMessages();
 
             // Get random loot items from the monster
             List<InventoryItem> lootedItems = new List<InventoryItem>();
+
             // Add items to the lootedItems list, comparing a random number to the drop percentage
             foreach (LootItem lootItem in _currentMonster.LootTable)
             {
@@ -374,6 +354,7 @@ public partial class RPG_Project : Form
                     lootedItems.Add(new InventoryItem(lootItem.Details, 1));
                 }
             }
+
             // If no items were randomly selected, then add the default loot item(s).
             if (lootedItems.Count == 0)
             {
@@ -385,45 +366,29 @@ public partial class RPG_Project : Form
                     }
                 }
             }
+
             // Add the looted items to the player's inventory
             foreach (InventoryItem inventoryItem in lootedItems)
             {
                 _player.AddItemToInventory(inventoryItem.Details);
+
                 if (inventoryItem.Quantity == 1)
                 {
                     rtbMessages.Text += "You loot " + inventoryItem.Quantity.ToString() + " " + inventoryItem.Details.Name + Environment.NewLine;
-                    ScrollToBottomOfMessages();
-
                 }
                 else
                 {
                     rtbMessages.Text += "You loot " + inventoryItem.Quantity.ToString() + " " + inventoryItem.Details.NamePlural + Environment.NewLine;
-                    ScrollToBottomOfMessages();
-
                 }
             }
-            // Refresh player information and inventory controls
-            UpdatePlayerStats();
 
+            UpdatePlayerStats();
             UpdateInventoryListInUI();
             UpdateWeaponListInUI();
             UpdatePotionListInUI();
+
             // Add a blank line to the messages box, just for appearance.
             rtbMessages.Text += Environment.NewLine;
-            ScrollToBottomOfMessages();
-
-            cboWeapons.DataSource = _player.Weapons;
-            cboWeapons.DisplayMember = "Name";
-            cboWeapons.ValueMember = "Id";
-            if (_player.CurrentWeapon != null)
-            {
-                cboWeapons.SelectedItem = _player.CurrentWeapon;
-            }
-            cboWeapons.SelectedIndexChanged += cboWeapons_SelectedIndexChanged;
-            cboPotions.DataSource = _player.Potions;
-            cboPotions.DisplayMember = "Name";
-            cboPotions.ValueMember = "Id";
-            _player.PropertyChanged += PlayerOnPropertyChanged;
 
             // Move player to current location (to heal player and create a new monster to fight)
             MoveTo(_player.CurrentLocation);
@@ -431,42 +396,46 @@ public partial class RPG_Project : Form
         else
         {
             // Monster is still alive
+
             // Determine the amount of damage the monster does to the player
             int damageToPlayer = RandomNumberGenerator.NumberBetween(0, _currentMonster.MaximumDamage);
+
             // Display message
             rtbMessages.Text += "The " + _currentMonster.Name + " did " + damageToPlayer.ToString() + " points of damage." + Environment.NewLine;
-            ScrollToBottomOfMessages();
 
             // Subtract damage from player
             _player.CurrentHitPoints -= damageToPlayer;
+
             // Refresh player data in UI
             lblHitPoints.Text = _player.CurrentHitPoints.ToString();
+
             if (_player.CurrentHitPoints <= 0)
             {
                 // Display message
                 rtbMessages.Text += "The " + _currentMonster.Name + " killed you." + Environment.NewLine;
-                ScrollToBottomOfMessages();
 
                 // Move player to "Home"
                 MoveTo(World.LocationByID(World.LOCATION_ID_HOME));
             }
         }
+
+        ScrollToBottomOfMessages();
     }
-    private void cboWeapons_SelectedIndexChanged(object sender, EventArgs e)
-    {
-        _player.CurrentWeapon = (Weapon)cboWeapons.SelectedItem;
-    }
+
     private void btnUsePotion_Click(object sender, EventArgs e)
     {
         // Get the currently selected potion from the combobox
         HealingPotion potion = (HealingPotion)cboPotions.SelectedItem;
+
         // Add healing amount to the player's current hit points
         _player.CurrentHitPoints = (_player.CurrentHitPoints + potion.AmountToHeal);
+
         // CurrentHitPoints cannot exceed player's MaximumHitPoints
         if (_player.CurrentHitPoints > _player.MaximumHitPoints)
         {
             _player.CurrentHitPoints = _player.MaximumHitPoints;
         }
+
         // Remove the potion from the player's inventory
         foreach (InventoryItem ii in _player.Inventory)
         {
@@ -476,53 +445,74 @@ public partial class RPG_Project : Form
                 break;
             }
         }
+
         // Display message
         rtbMessages.Text += "You drink a " + potion.Name + Environment.NewLine;
-        ScrollToBottomOfMessages();
+
         // Monster gets their turn to attack
+
         // Determine the amount of damage the monster does to the player
         int damageToPlayer = RandomNumberGenerator.NumberBetween(0, _currentMonster.MaximumDamage);
+
         // Display message
         rtbMessages.Text += "The " + _currentMonster.Name + " did " + damageToPlayer.ToString() + " points of damage." + Environment.NewLine;
-        ScrollToBottomOfMessages();
 
         // Subtract damage from player
         _player.CurrentHitPoints -= damageToPlayer;
+
         if (_player.CurrentHitPoints <= 0)
         {
             // Display message
             rtbMessages.Text += "The " + _currentMonster.Name + " killed you." + Environment.NewLine;
-            ScrollToBottomOfMessages();
 
             // Move player to "Home"
             MoveTo(World.LocationByID(World.LOCATION_ID_HOME));
         }
+
         // Refresh player data in UI
         lblHitPoints.Text = _player.CurrentHitPoints.ToString();
         UpdateInventoryListInUI();
         UpdatePotionListInUI();
+
+        ScrollToBottomOfMessages();
     }
-    private void UpdatePlayerStats()
-    {
-        // Refresh player information and inventory controls
-        lblHitPoints.Text = _player.CurrentHitPoints.ToString();
-        lblGold.Text = _player.Gold.ToString();
-        lblExperience.Text = _player.ExperiencePoints.ToString();
-        lblLevel.Text = _player.Level.ToString();
-    }
+
     private void ScrollToBottomOfMessages()
     {
         rtbMessages.SelectionStart = rtbMessages.Text.Length;
         rtbMessages.ScrollToCaret();
     }
 
-    private void label1_Click(object sender, EventArgs e)
-    {
-
-    }
-
     private void RPG_Project_FormClosing(object sender, FormClosingEventArgs e)
     {
         File.WriteAllText(PLAYER_DATA_FILE_NAME, _player.ToXmlString());
     }
+
+    private void cboWeapons_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        _player.CurrentWeapon = (Weapon)cboWeapons.SelectedItem;
+    }
+    private void label1_Click(object sender, EventArgs e)
+    {
+    }
+
+    private void reset_btn_Click(object sender, EventArgs e)
+    {
+        const string filePath = "PlayerData.xml";
+
+        if (File.Exists(filePath))
+        {
+            File.Delete(filePath);
+        }
+
+        _player = Player.CreateDefaultPlayer();
+        MoveTo(_player.CurrentLocation);
+        UpdatePlayerStats();
+        UpdateInventoryListInUI();
+        UpdateQuestListInUI();
+        UpdateWeaponListInUI();
+        UpdatePotionListInUI();
+        rtbMessages.Text += "Player data reset to default." + Environment.NewLine;
+    }
 }
+

@@ -50,6 +50,7 @@
             rtbMessages = new RichTextBox();
             dgvInventory = new DataGridView();
             dgvQuests = new DataGridView();
+            reset_btn = new Button();
             ((System.ComponentModel.ISupportInitialize)dgvInventory).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dgvQuests).BeginInit();
             SuspendLayout();
@@ -266,11 +267,22 @@
             dgvQuests.Size = new Size(312, 189);
             dgvQuests.TabIndex = 21;
             // 
+            // reset_btn
+            // 
+            reset_btn.Location = new Point(526, 594);
+            reset_btn.Name = "reset_btn";
+            reset_btn.Size = new Size(94, 29);
+            reset_btn.TabIndex = 22;
+            reset_btn.Text = "Reset";
+            reset_btn.UseVisualStyleBackColor = true;
+            reset_btn.Click += reset_btn_Click;
+            // 
             // RPG_Project
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(717, 643);
+            Controls.Add(reset_btn);
             Controls.Add(dgvQuests);
             Controls.Add(dgvInventory);
             Controls.Add(rtbMessages);
@@ -327,5 +339,6 @@
         private RichTextBox rtbMessages;
         private DataGridView dgvInventory;
         private DataGridView dgvQuests;
+        private Button reset_btn;
     }
 }
