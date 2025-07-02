@@ -293,20 +293,11 @@ public partial class RPG_Project : Form
         }
         else
         {
-            cboWeapons.SelectedIndexChanged -= cboWeapons_SelectedIndexChanged;
             cboWeapons.DataSource = weapons;
-            cboWeapons.SelectedIndexChanged += cboWeapons_SelectedIndexChanged;
             cboWeapons.DisplayMember = "Name";
             cboWeapons.ValueMember = "ID";
 
-            if (_player.CurrentWeapon != null)
-            {
-                cboWeapons.SelectedItem = _player.CurrentWeapon;
-            }
-            else
-            {
-                cboWeapons.SelectedIndex = 0;
-            }
+            cboWeapons.SelectedIndex = 0;
         }
     }
 
@@ -461,27 +452,6 @@ public partial class RPG_Project : Form
             }
         }
     }
-    private void PlayerOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
-    {
-        if (propertyChangedEventArgs.PropertyName == "Weapons")
-        {
-            cboWeapons.DataSource = _player.Weapons;
-            if (!_player.Weapons.Any())
-            {
-                cboWeapons.Visible = false;
-                btnUseWeapon.Visible = false;
-            }
-        }
-        if (propertyChangedEventArgs.PropertyName == "Potions")
-        {
-            cboPotions.DataSource = _player.Potions;
-            if (!_player.Potions.Any())
-            {
-                cboPotions.Visible = false;
-                btnUsePotion.Visible = false;
-            }
-        }
-    }
     private void cboWeapons_SelectedIndexChanged(object sender, EventArgs e)
     {
         _player.CurrentWeapon = (Weapon)cboWeapons.SelectedItem;
@@ -540,7 +510,6 @@ public partial class RPG_Project : Form
         lblExperience.Text = _player.ExperiencePoints.ToString();
         lblLevel.Text = _player.Level.ToString();
     }
-
     private void ScrollToBottomOfMessages()
     {
         rtbMessages.SelectionStart = rtbMessages.Text.Length;
