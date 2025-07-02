@@ -24,10 +24,11 @@ public partial class RPG_Project : Form
         {
             _player = Player.CreateDefaultPlayer();
         }
-
+        lblHitPoints.DataBindings.Add("Text", _player, "CurrentHitPoints");
+        lblGold.DataBindings.Add("Text", _player, "Gold");
+        lblExperience.DataBindings.Add("Text", _player, "ExperiencePoints");
+        lblLevel.DataBindings.Add("Text", _player, "Level");
         MoveTo(_player.CurrentLocation);
-
-        UpdatePlayerStats();
     }
 
     private void btnNorth_Click(object sender, EventArgs e)
