@@ -23,16 +23,17 @@ namespace Engine
             }
         }
 
-        public int ExperiencePoints
-        {
-            get { return _experiencePoints; }
-            private set
-            {
-                _experiencePoints = value;
-                OnPropertyChanged("ExperiencePoints");
-                OnPropertyChanged("Level");
-            }
-        }
+        //public int ExperiencePoints
+        //{
+        //    get { return _experiencePoints; }
+        //    private set
+        //    {
+        //        _experiencePoints = value;
+        //        OnPropertyChanged("ExperiencePoints");
+        //        OnPropertyChanged("Level");
+        //    }
+        //}
+        public int ExperiencePoints { get; private set; }
 
         public int Level
         {
