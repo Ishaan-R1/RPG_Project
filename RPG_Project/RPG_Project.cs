@@ -1,5 +1,7 @@
 using Engine;
 namespace RPG_Project;
+
+using System.ComponentModel;
 using System.IO;
 
 
@@ -28,6 +30,20 @@ public partial class RPG_Project : Form
         lblGold.DataBindings.Add("Text", _player, "Gold");
         lblExperience.DataBindings.Add("Text", _player, "ExperiencePoints");
         lblLevel.DataBindings.Add("Text", _player, "Level");
+
+        cboWeapons.DataSource = _player.Weapons;
+        cboWeapons.DisplayMember = "Name";
+        cboWeapons.ValueMember = "Id";
+        if (_player.CurrentWeapon != null)
+        {
+            cboWeapons.SelectedItem = _player.CurrentWeapon;
+        }
+        cboWeapons.SelectedIndexChanged += cboWeapons_SelectedIndexChanged;
+        cboPotions.DataSource = _player.Potions;
+        cboPotions.DisplayMember = "Name";
+        cboPotions.ValueMember = "Id";
+        _player.PropertyChanged += PlayerOnPropertyChanged;
+
         MoveTo(_player.CurrentLocation);
 
         dgvInventory.RowHeadersVisible = false;
@@ -194,10 +210,10 @@ public partial class RPG_Project : Form
                 _currentMonster.LootTable.Add(lootItem);
             }
 
-            cboWeapons.Visible = true;
-            cboPotions.Visible = true;
-            btnUseWeapon.Visible = true;
-            btnUsePotion.Visible = true;
+            cboWeapons.Visible = _player.Weapons.Any();
+            cboPotions.Visible = _player.Potions.Any();
+            btnUseWeapon.Visible = _player.Weapons.Any();
+            btnUsePotion.Visible = _player.Potions.Any();
         }
         else
         {
@@ -213,10 +229,8 @@ public partial class RPG_Project : Form
         UpdatePlayerStats();
 
         // Refresh player's inventory list
-        UpdateInventoryListInUI();
 
         // Refresh player's quest list
-        UpdateQuestListInUI();
 
         // Refresh player's weapons combobox
         UpdateWeaponListInUI();
@@ -236,42 +250,6 @@ public partial class RPG_Project : Form
         lblLevel.Text = _player.Level.ToString();
     }
 
-    private void UpdateInventoryListInUI()
-    {
-        dgvInventory.RowHeadersVisible = false;
-
-        dgvInventory.ColumnCount = 2;
-        dgvInventory.Columns[0].Name = "Name";
-        dgvInventory.Columns[0].Width = 197;
-        dgvInventory.Columns[1].Name = "Quantity";
-
-        dgvInventory.Rows.Clear();
-
-        foreach (InventoryItem inventoryItem in _player.Inventory)
-        {
-            if (inventoryItem.Quantity > 0)
-            {
-                dgvInventory.Rows.Add(new[] { inventoryItem.Details.Name, inventoryItem.Quantity.ToString() });
-            }
-        }
-    }
-
-    private void UpdateQuestListInUI()
-    {
-        dgvQuests.RowHeadersVisible = false;
-
-        dgvQuests.ColumnCount = 2;
-        dgvQuests.Columns[0].Name = "Name";
-        dgvQuests.Columns[0].Width = 197;
-        dgvQuests.Columns[1].Name = "Done?";
-
-        dgvQuests.Rows.Clear();
-
-        foreach (PlayerQuest playerQuest in _player.Quests)
-        {
-            dgvQuests.Rows.Add(new[] { playerQuest.Details.Name, playerQuest.IsCompleted.ToString() });
-        }
-    }
 
     private void UpdateWeaponListInUI()
     {
@@ -413,7 +391,6 @@ public partial class RPG_Project : Form
             }
 
             UpdatePlayerStats();
-            UpdateInventoryListInUI();
             UpdateWeaponListInUI();
             UpdatePotionListInUI();
 
@@ -467,14 +444,7 @@ public partial class RPG_Project : Form
         }
 
         // Remove the potion from the player's inventory
-        foreach (InventoryItem ii in _player.Inventory)
-        {
-            if (ii.Details.ID == potion.ID)
-            {
-                ii.Quantity--;
-                break;
-            }
-        }
+        _player.RemoveItemFromInventory(potion, 1);
 
         // Display message
         rtbMessages.Text += "You drink a " + potion.Name + Environment.NewLine;
@@ -501,12 +471,31 @@ public partial class RPG_Project : Form
 
         // Refresh player data in UI
         lblHitPoints.Text = _player.CurrentHitPoints.ToString();
-        UpdateInventoryListInUI();
         UpdatePotionListInUI();
 
         ScrollToBottomOfMessages();
     }
-
+    private void PlayerOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
+    {
+        if (propertyChangedEventArgs.PropertyName == "Weapons")
+        {
+            cboWeapons.DataSource = _player.Weapons;
+            if (!_player.Weapons.Any())
+            {
+                cboWeapons.Visible = false;
+                btnUseWeapon.Visible = false;
+            }
+        }
+        if (propertyChangedEventArgs.PropertyName == "Potions")
+        {
+            cboPotions.DataSource = _player.Potions;
+            if (!_player.Potions.Any())
+            {
+                cboPotions.Visible = false;
+                btnUsePotion.Visible = false;
+            }
+        }
+    }
     private void ScrollToBottomOfMessages()
     {
         rtbMessages.SelectionStart = rtbMessages.Text.Length;
@@ -538,8 +527,6 @@ public partial class RPG_Project : Form
         _player = Player.CreateDefaultPlayer();
         MoveTo(_player.CurrentLocation);
         UpdatePlayerStats();
-        UpdateInventoryListInUI();
-        UpdateQuestListInUI();
         UpdateWeaponListInUI();
         UpdatePotionListInUI();
         rtbMessages.Text += "Player data reset to default." + Environment.NewLine;
