@@ -169,6 +169,7 @@ public partial class RPG_Project : Form
 
                         // Mark the quest as completed
                         _player.MarkQuestCompleted(newLocation.QuestAvailableHere);
+                        UpdateQuestLog();
                     }
                 }
             }
@@ -195,6 +196,7 @@ public partial class RPG_Project : Form
 
                 // Add the quest to the player's quest list
                 _player.Quests.Add(new PlayerQuest(newLocation.QuestAvailableHere));
+                UpdateQuestLog();
             }
         }
 
@@ -230,12 +232,16 @@ public partial class RPG_Project : Form
             }
             else
             {
+                string defeatedMonsterName = newLocation.MonsterLivingHere.Name;
+
                 _currentMonster = null;
                 cboWeapons.Visible = false;
                 cboPotions.Visible = false;
                 btnUseWeapon.Visible = false;
                 btnUsePotion.Visible = false;
-                rtbMessages.Text += "All monsters are defeated." + Environment.NewLine;
+
+                rtbMessages.Text += "All " + defeatedMonsterName + "s are defeated." + Environment.NewLine;
+
             }
         }
         else
@@ -520,6 +526,16 @@ public partial class RPG_Project : Form
 
         ScrollToBottomOfMessages();
     }
+    private void UpdateQuestLog()
+    {
+        lstQuestLog.Items.Clear();
+
+        foreach (PlayerQuest playerQuest in _player.Quests)
+        {
+            string status = playerQuest.IsCompleted ? " (Completed)" : " (In Progress)";
+            lstQuestLog.Items.Add($"{playerQuest.Details.Name}{status}");
+        }
+    }
     private void PlayerOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
     {
         if (propertyChangedEventArgs.PropertyName == "Weapons")
@@ -580,9 +596,6 @@ public partial class RPG_Project : Form
     private void btnStats_Click(object sender, EventArgs e)
     {
         StringBuilder stats = new StringBuilder();
-        string message = $"Fights Won: {_player.TotalFightsWon}\n" +
-                     $"Monsters Defeated: {_player.TotalMonstersDefeated}\n" +
-                     $"Total Gold Earned: {_player.TotalGoldEarned}";
 
         int totalKills = 0;
 
@@ -599,6 +612,11 @@ public partial class RPG_Project : Form
         stats.AppendLine($"\nTotal monsters defeated: {totalKills}");
 
         MessageBox.Show(stats.ToString(), "Player Stats");
+    }
+
+    private void lstQuestLog_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        
     }
 }
 
