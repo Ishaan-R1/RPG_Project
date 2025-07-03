@@ -51,6 +51,7 @@
             dgvInventory = new DataGridView();
             dgvQuests = new DataGridView();
             reset_btn = new Button();
+            btnStats = new Button();
             ((System.ComponentModel.ISupportInitialize)dgvInventory).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dgvQuests).BeginInit();
             SuspendLayout();
@@ -277,11 +278,22 @@
             reset_btn.UseVisualStyleBackColor = true;
             reset_btn.Click += reset_btn_Click;
             // 
+            // btnStats
+            // 
+            btnStats.Location = new Point(229, 34);
+            btnStats.Name = "btnStats";
+            btnStats.Size = new Size(94, 29);
+            btnStats.TabIndex = 23;
+            btnStats.Text = "Stats";
+            btnStats.UseVisualStyleBackColor = true;
+            btnStats.Click += btnStats_Click;
+            // 
             // RPG_Project
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(717, 643);
+            Controls.Add(btnStats);
             Controls.Add(reset_btn);
             Controls.Add(dgvQuests);
             Controls.Add(dgvInventory);
@@ -340,5 +352,6 @@
         private DataGridView dgvInventory;
         private DataGridView dgvQuests;
         private Button reset_btn;
+        private Button btnStats;
     }
 }

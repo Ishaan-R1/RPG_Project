@@ -10,8 +10,12 @@ namespace Engine
 {
     public class Player : LivingCreature
     {
+        public Dictionary<string, int> MonstersKilled { get; set; } = new Dictionary<string, int>();
         private int _gold;
         private int _experiencePoints;
+        public int TotalFightsWon { get; set; }
+        public int TotalGoldEarned { get; set; }
+        public int TotalMonstersDefeated { get; set; }
 
         public int Gold
         {

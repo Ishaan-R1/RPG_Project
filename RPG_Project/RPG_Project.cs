@@ -3,6 +3,8 @@ namespace RPG_Project;
 
 using System.ComponentModel;
 using System.IO;
+using System.Text;
+using System.Threading;
 
 
 public partial class RPG_Project : Form
@@ -359,6 +361,15 @@ public partial class RPG_Project : Form
         // Check if the monster is dead
         if (_currentMonster.CurrentHitPoints <= 0)
         {
+            // Track monster kills by name
+            if (_player.MonstersKilled.ContainsKey(_currentMonster.Name))
+            {
+                _player.MonstersKilled[_currentMonster.Name]++;
+            }
+            else
+            {
+                _player.MonstersKilled[_currentMonster.Name] = 1;
+            }
             // Monster is dead
             rtbMessages.Text += Environment.NewLine;
             rtbMessages.Text += "You defeated the " + _currentMonster.Name + Environment.NewLine;
@@ -370,6 +381,14 @@ public partial class RPG_Project : Form
             // Give player gold for killing the monster 
             _player.Gold += _currentMonster.RewardGold;
             rtbMessages.Text += "You receive " + _currentMonster.RewardGold.ToString() + " gold" + Environment.NewLine;
+
+            // Accumulate stats
+            _player.TotalFightsWon++;
+            _player.TotalMonstersDefeated++;
+
+            int goldEarned = _currentMonster.RewardGold;
+            _player.Gold += goldEarned;
+            _player.TotalGoldEarned += goldEarned;
 
             // Get random loot items from the monster
             List<InventoryItem> lootedItems = new List<InventoryItem>();
@@ -556,6 +575,30 @@ public partial class RPG_Project : Form
         UpdateWeaponListInUI();
         UpdatePotionListInUI();
         rtbMessages.Text += "Player data reset to default." + Environment.NewLine;
+    }
+
+    private void btnStats_Click(object sender, EventArgs e)
+    {
+        StringBuilder stats = new StringBuilder();
+        string message = $"Fights Won: {_player.TotalFightsWon}\n" +
+                     $"Monsters Defeated: {_player.TotalMonstersDefeated}\n" +
+                     $"Total Gold Earned: {_player.TotalGoldEarned}";
+
+        int totalKills = 0;
+
+        stats.AppendLine($"Fights Won: {_player.TotalFightsWon}\n" +
+                     $"Monsters Defeated: {_player.TotalMonstersDefeated}\n" +
+                     $"Total Gold Earned: {_player.TotalGoldEarned}");
+
+        foreach (var entry in _player.MonstersKilled)
+        {
+            stats.AppendLine($"{entry.Value} {entry.Key.ToLower()}(s) defeated");
+            totalKills += entry.Value;
+        }
+
+        stats.AppendLine($"\nTotal monsters defeated: {totalKills}");
+
+        MessageBox.Show(stats.ToString(), "Player Stats");
     }
 }
 
