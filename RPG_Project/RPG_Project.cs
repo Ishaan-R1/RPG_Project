@@ -350,7 +350,7 @@ public partial class RPG_Project : Form
         }
     }
 
-    private void btnUseWeapon_Click(object sender, EventArgs e)
+    private async void btnUseWeapon_Click(object sender, EventArgs e)
     {
         // Get the currently selected weapon from the cboWeapons ComboBox
         Weapon currentWeapon = (Weapon)cboWeapons.SelectedItem;
@@ -391,6 +391,13 @@ public partial class RPG_Project : Form
             // Accumulate stats
             _player.TotalFightsWon++;
             _player.TotalMonstersDefeated++;
+
+            if (_player.TotalMonstersDefeated >= 30)
+            {
+                rtbMessages.Text += "You defeated the all monsters!";
+                MessageBox.Show("You have defeated all monsters and brought peace to the land. You win!");
+                restartBtn.Visible = true;
+            }
 
             int goldEarned = _currentMonster.RewardGold;
             _player.Gold += goldEarned;
@@ -616,7 +623,41 @@ public partial class RPG_Project : Form
 
     private void lstQuestLog_SelectedIndexChanged(object sender, EventArgs e)
     {
-        
+
+    }
+
+    private void restartBtn_Click(object sender, EventArgs e)
+    {
+        RestartGame();
+    }
+    private void RestartGame()
+    {
+        const string filePath = "PlayerData.xml";
+
+        if (File.Exists(filePath))
+        {
+            File.Delete(filePath);
+        }
+
+        _player = Player.CreateDefaultPlayer();
+        _player.TotalMonstersDefeated = 0;
+        _player.TotalFightsWon = 0;
+        _player.TotalGoldEarned = 0;
+        _player.MonstersKilled.Clear();
+        MoveTo(_player.CurrentLocation);
+        UpdatePlayerStats();
+        UpdateWeaponListInUI();
+        UpdatePotionListInUI();
+
+        rtbMessages.Clear();
+        restartBtn.Visible = false;
+
+
+        _monstersRemainingByLocation.Clear();
+
+        UpdateQuestLog();
+
+
     }
 }
 

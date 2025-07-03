@@ -53,6 +53,7 @@
             reset_btn = new Button();
             btnStats = new Button();
             lstQuestLog = new ListBox();
+            restartBtn = new Button();
             ((System.ComponentModel.ISupportInitialize)dgvInventory).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dgvQuests).BeginInit();
             SuspendLayout();
@@ -275,7 +276,7 @@
             reset_btn.Name = "reset_btn";
             reset_btn.Size = new Size(94, 29);
             reset_btn.TabIndex = 22;
-            reset_btn.Text = "Resart";
+            reset_btn.Text = "Reset";
             reset_btn.UseVisualStyleBackColor = true;
             reset_btn.Click += reset_btn_Click;
             // 
@@ -297,11 +298,22 @@
             lstQuestLog.Size = new Size(300, 104);
             lstQuestLog.TabIndex = 24;
             // 
+            // restartBtn
+            // 
+            restartBtn.Location = new Point(714, 173);
+            restartBtn.Name = "restartBtn";
+            restartBtn.Size = new Size(94, 29);
+            restartBtn.TabIndex = 25;
+            restartBtn.Text = "Restart";
+            restartBtn.UseVisualStyleBackColor = true;
+            restartBtn.Click += restartBtn_Click;
+            // 
             // RPG_Project
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1025, 643);
+            Controls.Add(restartBtn);
             Controls.Add(lstQuestLog);
             Controls.Add(btnStats);
             Controls.Add(reset_btn);
@@ -364,5 +376,6 @@
         private Button reset_btn;
         private Button btnStats;
         private ListBox lstQuestLog;
+        private Button restartBtn;
     }
 }

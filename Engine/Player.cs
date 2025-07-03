@@ -17,6 +17,7 @@ namespace Engine
         public int TotalGoldEarned { get; set; }
         public int TotalMonstersDefeated { get; set; }
 
+
         public int Gold
         {
             get { return _gold; }
