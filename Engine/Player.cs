@@ -109,6 +109,25 @@ namespace Engine
                     int currentWeaponID = Convert.ToInt32(playerData.SelectSingleNode("/Player/Stats/CurrentWeapon").InnerText);
                     player.CurrentWeapon = (Weapon)World.ItemByID(currentWeaponID);
                 }
+                XmlNode statsNode = playerData.SelectSingleNode("/Player/Stats");
+
+                if (statsNode.SelectSingleNode("TotalFightsWon") != null)
+                    player.TotalFightsWon = Convert.ToInt32(statsNode.SelectSingleNode("TotalFightsWon").InnerText);
+
+                if (statsNode.SelectSingleNode("TotalGoldEarned") != null)
+                    player.TotalGoldEarned = Convert.ToInt32(statsNode.SelectSingleNode("TotalGoldEarned").InnerText);
+
+                if (statsNode.SelectSingleNode("TotalMonstersDefeated") != null)
+                    player.TotalMonstersDefeated = Convert.ToInt32(statsNode.SelectSingleNode("TotalMonstersDefeated").InnerText);
+
+                XmlNodeList monsterNodes = playerData.SelectNodes("/Player/MonstersKilled/Monster");
+                foreach (XmlNode monsterNode in monsterNodes)
+                {
+                    string name = monsterNode.Attributes["Name"].Value;
+                    int count = Convert.ToInt32(monsterNode.Attributes["Count"].Value);
+
+                    player.MonstersKilled[name] = count;
+                }
 
                 foreach (XmlNode node in playerData.SelectNodes("/Player/InventoryItems/InventoryItem"))
                 {
@@ -314,6 +333,17 @@ namespace Engine
                 currentWeapon.AppendChild(playerData.CreateTextNode(this.CurrentWeapon.ID.ToString()));
                 stats.AppendChild(currentWeapon);
             }
+            XmlNode totalFightsWon = playerData.CreateElement("TotalFightsWon");
+            totalFightsWon.AppendChild(playerData.CreateTextNode(this.TotalFightsWon.ToString()));
+            stats.AppendChild(totalFightsWon);
+
+            XmlNode totalGoldEarned = playerData.CreateElement("TotalGoldEarned");
+            totalGoldEarned.AppendChild(playerData.CreateTextNode(this.TotalGoldEarned.ToString()));
+            stats.AppendChild(totalGoldEarned);
+
+            XmlNode totalMonstersDefeated = playerData.CreateElement("TotalMonstersDefeated");
+            totalMonstersDefeated.AppendChild(playerData.CreateTextNode(this.TotalMonstersDefeated.ToString()));
+            stats.AppendChild(totalMonstersDefeated);
 
             // Create the "InventoryItems" child node to hold each InventoryItem node
             XmlNode inventoryItems = playerData.CreateElement("InventoryItems");
@@ -333,6 +363,23 @@ namespace Engine
                 inventoryItem.Attributes.Append(quantityAttribute);
 
                 inventoryItems.AppendChild(inventoryItem);
+            }
+            XmlNode monstersKilled = playerData.CreateElement("MonstersKilled");
+            player.AppendChild(monstersKilled);
+
+            foreach (var kvp in this.MonstersKilled)
+            {
+                XmlNode monsterNode = playerData.CreateElement("Monster");
+
+                XmlAttribute nameAttribute = playerData.CreateAttribute("Name");
+                nameAttribute.Value = kvp.Key;
+                monsterNode.Attributes.Append(nameAttribute);
+
+                XmlAttribute countAttribute = playerData.CreateAttribute("Count");
+                countAttribute.Value = kvp.Value.ToString();
+                monsterNode.Attributes.Append(countAttribute);
+
+                monstersKilled.AppendChild(monsterNode);
             }
 
             // Create the "PlayerQuests" child node to hold each PlayerQuest node

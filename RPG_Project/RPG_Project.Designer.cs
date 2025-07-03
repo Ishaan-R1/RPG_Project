@@ -271,21 +271,21 @@
             // 
             // reset_btn
             // 
-            reset_btn.Location = new Point(526, 594);
+            reset_btn.Location = new Point(919, 592);
             reset_btn.Name = "reset_btn";
             reset_btn.Size = new Size(94, 29);
             reset_btn.TabIndex = 22;
-            reset_btn.Text = "Reset";
+            reset_btn.Text = "Resart";
             reset_btn.UseVisualStyleBackColor = true;
             reset_btn.Click += reset_btn_Click;
             // 
             // btnStats
             // 
-            btnStats.Location = new Point(229, 34);
+            btnStats.Location = new Point(234, 19);
             btnStats.Name = "btnStats";
             btnStats.Size = new Size(94, 29);
             btnStats.TabIndex = 23;
-            btnStats.Text = "Stats";
+            btnStats.Text = "View Stats";
             btnStats.UseVisualStyleBackColor = true;
             btnStats.Click += btnStats_Click;
             // 
