@@ -7,6 +7,7 @@ using System.IO;
 
 public partial class RPG_Project : Form
 {
+    private Dictionary<int, int> _monstersRemainingByLocation = new Dictionary<int, int>();
     private const string PLAYER_DATA_FILE_NAME = "PlayerData.xml";
 
     private Player _player;
@@ -108,6 +109,7 @@ public partial class RPG_Project : Form
         // Update the player's current location
         _player.CurrentLocation = newLocation;
 
+
         // Show/hide available movement buttons
         btnNorth.Visible = (newLocation.LocationToNorth != null);
         btnEast.Visible = (newLocation.LocationToEast != null);
@@ -197,28 +199,46 @@ public partial class RPG_Project : Form
         // Does the location have a monster?
         if (newLocation.MonsterLivingHere != null)
         {
-            rtbMessages.Text += "You see a " + newLocation.MonsterLivingHere.Name + Environment.NewLine;
+            int locationId = newLocation.ID;
 
-            // Make a new monster, using the values from the standard monster in the World.Monster list
-            Monster standardMonster = World.MonsterByID(newLocation.MonsterLivingHere.ID);
-
-            _currentMonster = new Monster(standardMonster.ID, standardMonster.Name, standardMonster.MaximumDamage,
-                standardMonster.RewardExperiencePoints, standardMonster.RewardGold, standardMonster.CurrentHitPoints, standardMonster.MaximumHitPoints);
-
-            foreach (LootItem lootItem in standardMonster.LootTable)
+            // Initialize or reset rats count at this location
+            if (!_monstersRemainingByLocation.ContainsKey(locationId))
             {
-                _currentMonster.LootTable.Add(lootItem);
+                _monstersRemainingByLocation[locationId] = 10;
             }
 
-            cboWeapons.Visible = _player.Weapons.Any();
-            cboPotions.Visible = _player.Potions.Any();
-            btnUseWeapon.Visible = _player.Weapons.Any();
-            btnUsePotion.Visible = _player.Potions.Any();
+            if (_monstersRemainingByLocation[locationId] > 0)
+            {
+                rtbMessages.Text += $"You see a {newLocation.MonsterLivingHere.Name}" + Environment.NewLine;
+
+                // Create a new monster instance
+                Monster standardMonster = World.MonsterByID(newLocation.MonsterLivingHere.ID);
+                _currentMonster = new Monster(standardMonster.ID, standardMonster.Name, standardMonster.MaximumDamage,
+                    standardMonster.RewardExperiencePoints, standardMonster.RewardGold, standardMonster.CurrentHitPoints, standardMonster.MaximumHitPoints);
+
+                foreach (LootItem lootItem in standardMonster.LootTable)
+                {
+                    _currentMonster.LootTable.Add(lootItem);
+                }
+
+                cboWeapons.Visible = _player.Weapons.Any();
+                cboPotions.Visible = _player.Potions.Any();
+                btnUseWeapon.Visible = _player.Weapons.Any();
+                btnUsePotion.Visible = _player.Potions.Any();
+            }
+            else
+            {
+                _currentMonster = null;
+                cboWeapons.Visible = false;
+                cboPotions.Visible = false;
+                btnUseWeapon.Visible = false;
+                btnUsePotion.Visible = false;
+                rtbMessages.Text += "All monsters are defeated." + Environment.NewLine;
+            }
         }
         else
         {
             _currentMonster = null;
-
             cboWeapons.Visible = false;
             cboPotions.Visible = false;
             btnUseWeapon.Visible = false;
@@ -388,6 +408,12 @@ public partial class RPG_Project : Form
                 {
                     rtbMessages.Text += "You loot " + inventoryItem.Quantity.ToString() + " " + inventoryItem.Details.NamePlural + Environment.NewLine;
                 }
+            }
+            // Decrement monster counter
+            int locationId = _player.CurrentLocation.ID;
+            if (_monstersRemainingByLocation.ContainsKey(locationId))
+            {
+                _monstersRemainingByLocation[locationId]--;
             }
 
             UpdatePlayerStats();
