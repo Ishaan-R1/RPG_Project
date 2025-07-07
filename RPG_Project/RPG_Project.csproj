@@ -9,7 +9,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Images\club.png" />
     <None Remove="Images\rat.png" />
+    <None Remove="Images\rusty sword.png" />
     <None Remove="Sounds\club-hit.wav" />
     <None Remove="Sounds\collapse.wav" />
     <None Remove="Sounds\monster-growl.wav" />
@@ -20,11 +22,17 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="Images\club.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Images\rat.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\Giant spider.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\rusty sword.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Sounds\club-defeat.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

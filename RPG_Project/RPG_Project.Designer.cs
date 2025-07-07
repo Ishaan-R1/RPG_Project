@@ -60,11 +60,9 @@
             dgvInventory = new DataGridView();
             labelMonsterHP = new Label();
             lblMonstersRemaining = new Label();
-            pictureBox1 = new PictureBox();
             ((System.ComponentModel.ISupportInitialize)dgvQuests).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBoxMonster).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dgvInventory).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
             // label1
@@ -194,6 +192,8 @@
             btnUseWeapon.BackColor = Color.DarkRed;
             btnUseWeapon.FlatStyle = FlatStyle.Flat;
             btnUseWeapon.ForeColor = Color.White;
+            btnUseWeapon.Image = (Image)resources.GetObject("btnUseWeapon.Image");
+            btnUseWeapon.ImageAlign = ContentAlignment.MiddleLeft;
             btnUseWeapon.Location = new Point(643, 554);
             btnUseWeapon.Name = "btnUseWeapon";
             btnUseWeapon.Size = new Size(202, 58);
@@ -410,24 +410,12 @@
             lblMonstersRemaining.TabIndex = 29;
             lblMonstersRemaining.Text = "1 of 10 Rats Remaining";
             // 
-            // pictureBox1
-            // 
-            pictureBox1.BackColor = Color.DarkRed;
-            pictureBox1.Image = (Image)resources.GetObject("pictureBox1.Image");
-            pictureBox1.Location = new Point(645, 563);
-            pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(64, 40);
-            pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
-            pictureBox1.TabIndex = 30;
-            pictureBox1.TabStop = false;
-            // 
             // RPG_Project
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(34, 32, 52);
             ClientSize = new Size(1025, 743);
-            Controls.Add(pictureBox1);
             Controls.Add(lblMonstersRemaining);
             Controls.Add(labelMonsterHP);
             Controls.Add(dgvInventory);
@@ -466,7 +454,6 @@
             ((System.ComponentModel.ISupportInitialize)dgvQuests).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBoxMonster).EndInit();
             ((System.ComponentModel.ISupportInitialize)dgvInventory).EndInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -503,6 +490,5 @@
         private DataGridView dgvInventory;
         private Label labelMonsterHP;
         private Label lblMonstersRemaining;
-        private PictureBox pictureBox1;
     }
 }

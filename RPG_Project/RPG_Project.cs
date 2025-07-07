@@ -528,6 +528,7 @@ public partial class RPG_Project : Form
             {
                 // Display message
                 rtbMessages.AppendText("The " + _currentMonster.Name + " killed you." + Environment.NewLine);
+                PlaySound("collapse");
 
                 // Move player to "Home"
                 MoveTo(World.LocationByID(World.LOCATION_ID_HOME));
@@ -629,7 +630,15 @@ public partial class RPG_Project : Form
 
     private void cboWeapons_SelectedIndexChanged(object sender, EventArgs e)
     {
-        _player.CurrentWeapon = (Weapon)cboWeapons.SelectedItem;
+        if (cboWeapons.SelectedItem is Weapon selectedWeapon)
+        {
+            _player.CurrentWeapon = selectedWeapon;
+
+            string weaponImagePath = $"Images/{selectedWeapon.Name.ToLower()}.png";
+            //pictureBoxWeapon.Image = Image.FromFile(weaponImagePath);
+            btnUseWeapon.Image = Image.FromFile(weaponImagePath);
+        }
+
     }
     private void label1_Click(object sender, EventArgs e)
     {
