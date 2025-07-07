@@ -3,6 +3,8 @@ namespace RPG_Project;
 
 using System.ComponentModel;
 using System.IO;
+using System.Media;
+using System.Security.Policy;
 using System.Text;
 using System.Threading;
 
@@ -79,24 +81,37 @@ public partial class RPG_Project : Form
         });
     }
 
-    private void btnNorth_Click(object sender, EventArgs e)
+    private async void btnNorth_Click(object sender, EventArgs e)
     {
         MoveTo(_player.CurrentLocation.LocationToNorth);
+        await PlaySteps();
     }
 
-    private void btnEast_Click(object sender, EventArgs e)
+    private async void btnEast_Click(object sender, EventArgs e)
     {
         MoveTo(_player.CurrentLocation.LocationToEast);
+        await PlaySteps();
     }
 
-    private void btnSouth_Click(object sender, EventArgs e)
+    private async void btnSouth_Click(object sender, EventArgs e)
     {
         MoveTo(_player.CurrentLocation.LocationToSouth);
+        await PlaySteps();
     }
 
-    private void btnWest_Click(object sender, EventArgs e)
+    private async void btnWest_Click(object sender, EventArgs e)
     {
         MoveTo(_player.CurrentLocation.LocationToWest);
+        await PlaySteps();
+    }
+    private async Task PlaySteps()
+    {
+        var sound1 = new SoundPlayer("Sounds/st2-footstep.wav");
+        sound1.Play();
+        await Task.Delay(600);
+
+        var sound2 = new SoundPlayer("Sounds/st3-footstep.wav");
+        sound2.Play();
     }
 
     private void MoveTo(Location newLocation)
@@ -104,7 +119,7 @@ public partial class RPG_Project : Form
         //Does the location have any required items
         if (!_player.HasRequiredItemToEnterThisLocation(newLocation))
         {
-            rtbMessages.Text += "You must have a " + newLocation.ItemRequiredToEnter.Name + " to enter this location." + Environment.NewLine;
+            rtbMessages.AppendText("You must have a " + newLocation.ItemRequiredToEnter.Name + " to enter this location." + Environment.NewLine);
             return;
         }
 
@@ -148,18 +163,22 @@ public partial class RPG_Project : Form
                     if (playerHasAllItemsToCompleteQuest)
                     {
                         // Display message
-                        rtbMessages.Text += Environment.NewLine;
-                        rtbMessages.Text += "You complete the '" + newLocation.QuestAvailableHere.Name + "' quest." + Environment.NewLine;
+                        rtbMessages.AppendText(Environment.NewLine);
+                        rtbMessages.AppendText("You complete the '" + newLocation.QuestAvailableHere.Name + "' quest." + Environment.NewLine);
 
                         // Remove quest items from inventory
                         _player.RemoveQuestCompletionItems(newLocation.QuestAvailableHere);
 
                         // Give quest rewards
-                        rtbMessages.Text += "You receive: " + Environment.NewLine;
-                        rtbMessages.Text += newLocation.QuestAvailableHere.RewardExperiencePoints.ToString() + " experience points" + Environment.NewLine;
-                        rtbMessages.Text += newLocation.QuestAvailableHere.RewardGold.ToString() + " gold" + Environment.NewLine;
-                        rtbMessages.Text += newLocation.QuestAvailableHere.RewardItem.Name + Environment.NewLine;
-                        rtbMessages.Text += Environment.NewLine;
+                        rtbMessages.SelectionColor = Color.Gold;
+                        rtbMessages.AppendText("You receive: " + Environment.NewLine);
+                        rtbMessages.SelectionColor = Color.LightGreen;
+                        rtbMessages.AppendText(newLocation.QuestAvailableHere.RewardExperiencePoints.ToString() + " experience points" + Environment.NewLine);
+                        rtbMessages.SelectionColor = Color.Gold;
+                        rtbMessages.AppendText(newLocation.QuestAvailableHere.RewardGold.ToString() + " gold" + Environment.NewLine);
+                        rtbMessages.SelectionColor = Color.Wheat;
+                        rtbMessages.AppendText(newLocation.QuestAvailableHere.RewardItem.Name + Environment.NewLine);
+                        rtbMessages.AppendText(Environment.NewLine);
 
                         _player.AddExperiencePoints(newLocation.QuestAvailableHere.RewardExperiencePoints);
                         _player.Gold += newLocation.QuestAvailableHere.RewardGold;
@@ -178,21 +197,22 @@ public partial class RPG_Project : Form
                 // The player does not already have the quest
 
                 // Display the messages
-                rtbMessages.Text += "You receive the " + newLocation.QuestAvailableHere.Name + " quest." + Environment.NewLine;
-                rtbMessages.Text += newLocation.QuestAvailableHere.Description + Environment.NewLine;
-                rtbMessages.Text += "To complete it, return with:" + Environment.NewLine;
+                // Display the messages
+                rtbMessages.AppendText("You receive the " + newLocation.QuestAvailableHere.Name + " quest." + Environment.NewLine);
+                rtbMessages.AppendText(newLocation.QuestAvailableHere.Description + Environment.NewLine);
+                rtbMessages.AppendText("To complete it, return with:" + Environment.NewLine);
                 foreach (QuestCompletionItem qci in newLocation.QuestAvailableHere.QuestCompletionItems)
                 {
                     if (qci.Quantity == 1)
                     {
-                        rtbMessages.Text += qci.Quantity.ToString() + " " + qci.Details.Name + Environment.NewLine;
+                        rtbMessages.AppendText(qci.Quantity.ToString() + " " + qci.Details.Name + Environment.NewLine);
                     }
                     else
                     {
-                        rtbMessages.Text += qci.Quantity.ToString() + " " + qci.Details.NamePlural + Environment.NewLine;
+                        rtbMessages.AppendText(qci.Quantity.ToString() + " " + qci.Details.NamePlural + Environment.NewLine);
                     }
                 }
-                rtbMessages.Text += Environment.NewLine;
+                rtbMessages.AppendText(Environment.NewLine);
 
                 // Add the quest to the player's quest list
                 _player.Quests.Add(new PlayerQuest(newLocation.QuestAvailableHere));
@@ -213,12 +233,17 @@ public partial class RPG_Project : Form
 
             if (_monstersRemainingByLocation[locationId] > 0)
             {
-                rtbMessages.Text += $"You see a {newLocation.MonsterLivingHere.Name}" + Environment.NewLine;
+                int defeated = 10 - _monstersRemainingByLocation[locationId];
+                lblMonstersRemaining.Text = $"{_monstersRemainingByLocation[locationId]} of 10 {newLocation.MonsterLivingHere.Name}s remaining";
+
+                rtbMessages.AppendText($"You see a {newLocation.MonsterLivingHere.Name}" + Environment.NewLine);
+                //PlaySound("monster-growl");
 
                 // Create a new monster instance
                 Monster standardMonster = World.MonsterByID(newLocation.MonsterLivingHere.ID);
                 _currentMonster = new Monster(standardMonster.ID, standardMonster.Name, standardMonster.MaximumDamage,
                     standardMonster.RewardExperiencePoints, standardMonster.RewardGold, standardMonster.CurrentHitPoints, standardMonster.MaximumHitPoints);
+                UpdateMonsterImage(_currentMonster);
 
                 foreach (LootItem lootItem in standardMonster.LootTable)
                 {
@@ -240,7 +265,8 @@ public partial class RPG_Project : Form
                 btnUseWeapon.Visible = false;
                 btnUsePotion.Visible = false;
 
-                rtbMessages.Text += "All " + defeatedMonsterName + "s are defeated." + Environment.NewLine;
+                rtbMessages.AppendText("All " + defeatedMonsterName + "s are defeated." + Environment.NewLine);
+                PlaySound("collapse");
 
             }
         }
@@ -361,8 +387,25 @@ public partial class RPG_Project : Form
         // Apply the damage to the monster's CurrentHitPoints
         _currentMonster.CurrentHitPoints -= damageToMonster;
 
-        // Display message
-        rtbMessages.Text += "You hit the " + _currentMonster.Name + " for " + damageToMonster.ToString() + " points." + Environment.NewLine;
+        string weaponName = currentWeapon.Name.ToLower();
+
+        if (damageToMonster > 0)
+        {
+            rtbMessages.SelectionColor = Color.LightGreen;
+            rtbMessages.AppendText("You hit the " + _currentMonster.Name + " for " + damageToMonster.ToString() + " points." + Environment.NewLine);
+            //PlaySound("sword-slash-02");
+            PlaySound($"{weaponName}-hit");
+
+            UpdateMonsterHPBar();
+        }
+        else
+        {
+            rtbMessages.SelectionColor = Color.LightGreen;
+            rtbMessages.AppendText("You hit the " + _currentMonster.Name + " for " + damageToMonster.ToString() + " points." + Environment.NewLine);
+            PlaySound($"{weaponName}-miss");
+            UpdateMonsterHPBar();
+        }
+
 
         // Check if the monster is dead
         if (_currentMonster.CurrentHitPoints <= 0)
@@ -377,24 +420,29 @@ public partial class RPG_Project : Form
                 _player.MonstersKilled[_currentMonster.Name] = 1;
             }
             // Monster is dead
-            rtbMessages.Text += Environment.NewLine;
-            rtbMessages.Text += "You defeated the " + _currentMonster.Name + Environment.NewLine;
+            rtbMessages.AppendText(Environment.NewLine);
+            rtbMessages.SelectionColor = Color.Yellow;
+            rtbMessages.AppendText("You defeated the " + _currentMonster.Name + Environment.NewLine);
+            PlaySound($"{weaponName}-defeat");
+            pictureBoxMonster.Image = null;
 
             // Give player experience points for killing the monster
+            rtbMessages.SelectionColor = Color.LightGreen;
             _player.AddExperiencePoints(_currentMonster.RewardExperiencePoints);
-            rtbMessages.Text += "You receive " + _currentMonster.RewardExperiencePoints.ToString() + " experience points" + Environment.NewLine;
+            rtbMessages.AppendText("You receive " + _currentMonster.RewardExperiencePoints.ToString() + " experience points" + Environment.NewLine);
 
             // Give player gold for killing the monster 
+            rtbMessages.SelectionColor = Color.Gold;
             _player.Gold += _currentMonster.RewardGold;
-            rtbMessages.Text += "You receive " + _currentMonster.RewardGold.ToString() + " gold" + Environment.NewLine;
+            rtbMessages.AppendText("You receive " + _currentMonster.RewardGold.ToString() + " gold" + Environment.NewLine);
 
             // Accumulate stats
             _player.TotalFightsWon++;
             _player.TotalMonstersDefeated++;
 
-            if (_player.TotalMonstersDefeated >= 30)
+            if (_player.TotalMonstersDefeated >= 300)
             {
-                rtbMessages.Text += "You defeated the all monsters!";
+                rtbMessages.AppendText("You defeated the all monsters!");
                 MessageBox.Show("You have defeated all monsters and brought peace to the land. You win!");
                 restartBtn.Visible = true;
             }
@@ -434,11 +482,13 @@ public partial class RPG_Project : Form
 
                 if (inventoryItem.Quantity == 1)
                 {
-                    rtbMessages.Text += "You loot " + inventoryItem.Quantity.ToString() + " " + inventoryItem.Details.Name + Environment.NewLine;
+                    rtbMessages.SelectionColor = Color.Wheat;
+                    rtbMessages.AppendText("You loot " + inventoryItem.Quantity.ToString() + " " + inventoryItem.Details.Name + Environment.NewLine);
                 }
                 else
                 {
-                    rtbMessages.Text += "You loot " + inventoryItem.Quantity.ToString() + " " + inventoryItem.Details.NamePlural + Environment.NewLine;
+                    rtbMessages.SelectionColor = Color.Wheat;
+                    rtbMessages.AppendText("You loot " + inventoryItem.Quantity.ToString() + " " + inventoryItem.Details.NamePlural + Environment.NewLine);
                 }
             }
             // Decrement monster counter
@@ -452,8 +502,7 @@ public partial class RPG_Project : Form
             UpdateWeaponListInUI();
             UpdatePotionListInUI();
 
-            // Add a blank line to the messages box, just for appearance.
-            rtbMessages.Text += Environment.NewLine;
+            rtbMessages.AppendText(Environment.NewLine);
 
             // Move player to current location (to heal player and create a new monster to fight)
             MoveTo(_player.CurrentLocation);
@@ -466,7 +515,8 @@ public partial class RPG_Project : Form
             int damageToPlayer = RandomNumberGenerator.NumberBetween(0, _currentMonster.MaximumDamage);
 
             // Display message
-            rtbMessages.Text += "The " + _currentMonster.Name + " did " + damageToPlayer.ToString() + " points of damage." + Environment.NewLine;
+            rtbMessages.SelectionColor = Color.IndianRed;
+            rtbMessages.AppendText("The " + _currentMonster.Name + " did " + damageToPlayer.ToString() + " points of damage." + Environment.NewLine);
 
             // Subtract damage from player
             _player.CurrentHitPoints -= damageToPlayer;
@@ -477,7 +527,7 @@ public partial class RPG_Project : Form
             if (_player.CurrentHitPoints <= 0)
             {
                 // Display message
-                rtbMessages.Text += "The " + _currentMonster.Name + " killed you." + Environment.NewLine;
+                rtbMessages.AppendText("The " + _currentMonster.Name + " killed you." + Environment.NewLine);
 
                 // Move player to "Home"
                 MoveTo(World.LocationByID(World.LOCATION_ID_HOME));
@@ -489,6 +539,7 @@ public partial class RPG_Project : Form
 
     private void btnUsePotion_Click(object sender, EventArgs e)
     {
+        PlaySound("potion");
         // Get the currently selected potion from the combobox
         HealingPotion potion = (HealingPotion)cboPotions.SelectedItem;
 
@@ -505,7 +556,7 @@ public partial class RPG_Project : Form
         _player.RemoveItemFromInventory(potion, 1);
 
         // Display message
-        rtbMessages.Text += "You drink a " + potion.Name + Environment.NewLine;
+        rtbMessages.AppendText("You drink a " + potion.Name + Environment.NewLine);
 
         // Monster gets their turn to attack
 
@@ -513,7 +564,8 @@ public partial class RPG_Project : Form
         int damageToPlayer = RandomNumberGenerator.NumberBetween(0, _currentMonster.MaximumDamage);
 
         // Display message
-        rtbMessages.Text += "The " + _currentMonster.Name + " did " + damageToPlayer.ToString() + " points of damage." + Environment.NewLine;
+        rtbMessages.SelectionColor = Color.IndianRed;
+        rtbMessages.AppendText("The " + _currentMonster.Name + " did " + damageToPlayer.ToString() + " points of damage." + Environment.NewLine);
 
         // Subtract damage from player
         _player.CurrentHitPoints -= damageToPlayer;
@@ -521,7 +573,7 @@ public partial class RPG_Project : Form
         if (_player.CurrentHitPoints <= 0)
         {
             // Display message
-            rtbMessages.Text += "The " + _currentMonster.Name + " killed you." + Environment.NewLine;
+            rtbMessages.AppendText("The " + _currentMonster.Name + " killed you." + Environment.NewLine);
 
             // Move player to "Home"
             MoveTo(World.LocationByID(World.LOCATION_ID_HOME));
@@ -597,7 +649,7 @@ public partial class RPG_Project : Form
         UpdatePlayerStats();
         UpdateWeaponListInUI();
         UpdatePotionListInUI();
-        rtbMessages.Text += "Player data reset to default." + Environment.NewLine;
+        rtbMessages.AppendText("Player data reset to default." + Environment.NewLine);
     }
 
     private void btnStats_Click(object sender, EventArgs e)
@@ -658,6 +710,27 @@ public partial class RPG_Project : Form
         UpdateQuestLog();
 
 
+    }
+    private void UpdateMonsterImage(Monster monster)
+    {
+        string imagePath = $"Images/{monster.Name.ToLower()}.png";
+        pictureBoxMonster.Image = Image.FromFile(imagePath);
+    }
+    private void UpdateMonsterHPBar()
+    {
+        hpProgressBar.Maximum = _currentMonster.MaximumHitPoints;
+
+        // Clamp value so it never goes below 0
+        int clampedHP = Math.Max(0, _currentMonster.CurrentHitPoints);
+
+        hpProgressBar.Value = clampedHP;
+        labelMonsterHP.Text = $"HP: {clampedHP}/{_currentMonster.MaximumHitPoints}";
+    }
+    //PlaySound("sword");
+    private void PlaySound(string filename)
+    {
+        var sound = new SoundPlayer($"Sounds/{filename}.wav");
+        sound.Play();
     }
 }
 
