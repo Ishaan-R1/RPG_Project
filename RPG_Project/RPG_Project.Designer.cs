@@ -68,7 +68,6 @@
             ((System.ComponentModel.ISupportInitialize)dgvQuests).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBoxMonster).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dgvInventory).BeginInit();
-            panelPlayerControl.SuspendLayout();
             SuspendLayout();
             // 
             // label1
@@ -181,22 +180,24 @@
             // 
             cboWeapons.BackColor = Color.FromArgb(45, 34, 18);
             cboWeapons.FlatStyle = FlatStyle.Flat;
+            cboWeapons.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
             cboWeapons.ForeColor = Color.FromArgb(254, 242, 205);
             cboWeapons.FormattingEnabled = true;
-            cboWeapons.Location = new Point(724, 507);
+            cboWeapons.Location = new Point(713, 468);
             cboWeapons.Name = "cboWeapons";
-            cboWeapons.Size = new Size(202, 28);
+            cboWeapons.Size = new Size(202, 31);
             cboWeapons.TabIndex = 10;
             // 
             // cboPotions
             // 
             cboPotions.BackColor = Color.FromArgb(45, 34, 18);
             cboPotions.FlatStyle = FlatStyle.Flat;
+            cboPotions.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
             cboPotions.ForeColor = Color.FromArgb(247, 226, 143);
             cboPotions.FormattingEnabled = true;
-            cboPotions.Location = new Point(724, 619);
+            cboPotions.Location = new Point(713, 580);
             cboPotions.Name = "cboPotions";
-            cboPotions.Size = new Size(102, 28);
+            cboPotions.Size = new Size(102, 31);
             cboPotions.TabIndex = 11;
             // 
             // btnUseWeapon
@@ -206,7 +207,7 @@
             btnUseWeapon.ForeColor = Color.FromArgb(247, 226, 143);
             btnUseWeapon.Image = (Image)resources.GetObject("btnUseWeapon.Image");
             btnUseWeapon.ImageAlign = ContentAlignment.MiddleLeft;
-            btnUseWeapon.Location = new Point(724, 554);
+            btnUseWeapon.Location = new Point(713, 515);
             btnUseWeapon.Name = "btnUseWeapon";
             btnUseWeapon.Size = new Size(202, 58);
             btnUseWeapon.TabIndex = 12;
@@ -220,7 +221,7 @@
             btnUsePotion.ForeColor = Color.FromArgb(247, 226, 143);
             btnUsePotion.Image = (Image)resources.GetObject("btnUsePotion.Image");
             btnUsePotion.ImageAlign = ContentAlignment.MiddleLeft;
-            btnUsePotion.Location = new Point(832, 618);
+            btnUsePotion.Location = new Point(821, 579);
             btnUsePotion.Name = "btnUsePotion";
             btnUsePotion.Size = new Size(94, 29);
             btnUsePotion.TabIndex = 13;
@@ -233,7 +234,7 @@
             btnNorth.BackColor = Color.Black;
             btnNorth.FlatStyle = FlatStyle.Popup;
             btnNorth.Image = (Image)resources.GetObject("btnNorth.Image");
-            btnNorth.Location = new Point(492, 473);
+            btnNorth.Location = new Point(495, 450);
             btnNorth.Name = "btnNorth";
             btnNorth.Size = new Size(64, 64);
             btnNorth.TabIndex = 14;
@@ -245,9 +246,9 @@
             btnEast.BackColor = Color.Black;
             btnEast.FlatStyle = FlatStyle.Popup;
             btnEast.Image = (Image)resources.GetObject("btnEast.Image");
-            btnEast.Location = new Point(562, 539);
+            btnEast.Location = new Point(565, 515);
             btnEast.Name = "btnEast";
-            btnEast.Size = new Size(75, 64);
+            btnEast.Size = new Size(75, 58);
             btnEast.TabIndex = 15;
             btnEast.TextAlign = ContentAlignment.MiddleRight;
             btnEast.UseVisualStyleBackColor = false;
@@ -258,9 +259,9 @@
             btnWest.BackColor = Color.Black;
             btnWest.FlatStyle = FlatStyle.Popup;
             btnWest.Image = (Image)resources.GetObject("btnWest.Image");
-            btnWest.Location = new Point(411, 539);
+            btnWest.Location = new Point(414, 515);
             btnWest.Name = "btnWest";
-            btnWest.Size = new Size(75, 64);
+            btnWest.Size = new Size(75, 58);
             btnWest.TabIndex = 16;
             btnWest.UseVisualStyleBackColor = false;
             btnWest.Click += btnWest_Click;
@@ -296,7 +297,6 @@
             dgvQuests.AllowUserToAddRows = false;
             dgvQuests.AllowUserToDeleteRows = false;
             dgvQuests.BackgroundColor = Color.FromArgb(26, 26, 26);
-            dgvQuests.CellBorderStyle = DataGridViewCellBorderStyle.None;
             dgvQuests.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
             dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle1.BackColor = Color.FromArgb(26, 26, 26);
@@ -309,7 +309,7 @@
             dgvQuests.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle2.BackColor = Color.FromArgb(26, 26, 26);
-            dataGridViewCellStyle2.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle2.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
             dataGridViewCellStyle2.ForeColor = SystemColors.ControlLight;
             dataGridViewCellStyle2.SelectionBackColor = Color.FromArgb(26, 26, 26);
             dataGridViewCellStyle2.SelectionForeColor = Color.FromArgb(254, 242, 205);
@@ -326,7 +326,7 @@
             dgvQuests.RowHeadersVisible = false;
             dgvQuests.RowHeadersWidth = 51;
             dgvQuests.ScrollBars = ScrollBars.Vertical;
-            dgvQuests.Size = new Size(312, 117);
+            dgvQuests.Size = new Size(312, 107);
             dgvQuests.TabIndex = 21;
             // 
             // reset_btn
@@ -355,10 +355,15 @@
             // 
             // lstQuestLog
             // 
+            lstQuestLog.BackColor = Color.FromArgb(26, 26, 26);
+            lstQuestLog.BorderStyle = BorderStyle.None;
+            lstQuestLog.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lstQuestLog.ForeColor = Color.FromArgb(254, 242, 205);
             lstQuestLog.FormattingEnabled = true;
-            lstQuestLog.Location = new Point(713, 19);
+            lstQuestLog.ItemHeight = 23;
+            lstQuestLog.Location = new Point(713, 20);
             lstQuestLog.Name = "lstQuestLog";
-            lstQuestLog.Size = new Size(300, 104);
+            lstQuestLog.Size = new Size(300, 92);
             lstQuestLog.TabIndex = 24;
             // 
             // restartBtn
@@ -378,7 +383,7 @@
             btnSouth.BackColor = Color.Black;
             btnSouth.FlatStyle = FlatStyle.Popup;
             btnSouth.Image = (Image)resources.GetObject("btnSouth.Image");
-            btnSouth.Location = new Point(492, 604);
+            btnSouth.Location = new Point(495, 581);
             btnSouth.Name = "btnSouth";
             btnSouth.Size = new Size(64, 64);
             btnSouth.TabIndex = 17;
@@ -398,7 +403,7 @@
             // hpProgressBar
             // 
             hpProgressBar.ForeColor = Color.Red;
-            hpProgressBar.Location = new Point(102, -11);
+            hpProgressBar.Location = new Point(264, 616);
             hpProgressBar.Name = "hpProgressBar";
             hpProgressBar.Size = new Size(150, 29);
             hpProgressBar.TabIndex = 27;
@@ -420,7 +425,7 @@
             dgvInventory.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle4.BackColor = Color.FromArgb(26, 26, 26);
-            dataGridViewCellStyle4.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle4.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
             dataGridViewCellStyle4.ForeColor = SystemColors.ControlLight;
             dataGridViewCellStyle4.Padding = new Padding(5, 2, 5, 2);
             dataGridViewCellStyle4.SelectionBackColor = Color.FromArgb(26, 26, 26);
@@ -463,7 +468,7 @@
             lblMonstersRemaining.AutoSize = true;
             lblMonstersRemaining.Font = new Font("Segoe UI", 10.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
             lblMonstersRemaining.ForeColor = Color.FromArgb(254, 242, 205);
-            lblMonstersRemaining.Location = new Point(765, 419);
+            lblMonstersRemaining.Location = new Point(765, 414);
             lblMonstersRemaining.Name = "lblMonstersRemaining";
             lblMonstersRemaining.Size = new Size(196, 25);
             lblMonstersRemaining.TabIndex = 29;
@@ -471,10 +476,10 @@
             // 
             // panelPlayerControl
             // 
-            panelPlayerControl.Controls.Add(hpProgressBar);
-            panelPlayerControl.Location = new Point(376, 724);
+            panelPlayerControl.Location = new Point(60, 651);
             panelPlayerControl.Name = "panelPlayerControl";
-            panelPlayerControl.Size = new Size(225, 174);
+            panelPlayerControl.Padding = new Padding(30);
+            panelPlayerControl.Size = new Size(310, 112);
             panelPlayerControl.TabIndex = 30;
             panelPlayerControl.Paint += panelPlayerControl_Paint;
             // 
@@ -484,6 +489,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(38, 37, 37);
             ClientSize = new Size(1025, 743);
+            Controls.Add(hpProgressBar);
             Controls.Add(lblMonstersRemaining);
             Controls.Add(labelMonsterHP);
             Controls.Add(dgvInventory);
@@ -522,7 +528,6 @@
             ((System.ComponentModel.ISupportInitialize)dgvQuests).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBoxMonster).EndInit();
             ((System.ComponentModel.ISupportInitialize)dgvInventory).EndInit();
-            panelPlayerControl.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }

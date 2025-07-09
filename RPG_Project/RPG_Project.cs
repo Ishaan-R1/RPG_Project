@@ -27,7 +27,14 @@ public partial class RPG_Project : Form
         StyleButton(restartBtn);
         StyleButton(reset_btn);
         StyleTable(dgvInventory);
-     
+        StyleTable(dgvQuests);
+        StyleDirectionBtns(btnNorth);
+        StyleDirectionBtns(btnEast);
+        StyleDirectionBtns(btnSouth);
+        StyleDirectionBtns(btnWest);
+
+
+
 
 
 
@@ -772,6 +779,13 @@ public partial class RPG_Project : Form
         btn.FlatAppearance.BorderSize = 1;
         btn.BackColor = ColorTranslator.FromHtml("#2D2212");
         btn.ForeColor = ColorTranslator.FromHtml("#F7E28F");
+        btn.FlatAppearance.MouseOverBackColor = ColorTranslator.FromHtml("#3A2F1F");
+    }
+    private void StyleDirectionBtns(Button btn)
+    {
+        btn.FlatStyle = FlatStyle.Flat;
+        btn.FlatAppearance.BorderColor = ColorTranslator.FromHtml("#CFAF5E");
+        btn.FlatAppearance.BorderSize = 1;
         btn.FlatAppearance.MouseOverBackColor = ColorTranslator.FromHtml("#3A2F1F");
     }
     private void StyleTable(DataGridView dvg)
