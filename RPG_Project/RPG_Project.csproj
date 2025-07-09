@@ -12,6 +12,7 @@
     <None Remove="Images\club.png" />
     <None Remove="Images\rat.png" />
     <None Remove="Images\rusty sword.png" />
+    <None Remove="Sounds\club-draw.wav" />
     <None Remove="Sounds\club-hit.wav" />
     <None Remove="Sounds\collapse.wav" />
     <None Remove="Sounds\monster-growl.wav" />
@@ -35,6 +36,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Sounds\club-defeat.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Sounds\club-draw.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Sounds\club-hit.wav">
@@ -71,6 +75,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Sounds\st3-footstep.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Sounds\rusty sword-draw.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

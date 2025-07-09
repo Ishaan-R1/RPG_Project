@@ -7,6 +7,7 @@ using System.Media;
 using System.Security.Policy;
 using System.Text;
 using System.Threading;
+using System.Windows.Forms;
 
 
 public partial class RPG_Project : Form
@@ -20,6 +21,16 @@ public partial class RPG_Project : Form
     public RPG_Project()
     {
         InitializeComponent();
+        StyleButton(btnUseWeapon);
+        StyleButton(btnUsePotion);
+        StyleButton(btnStats);
+        StyleButton(restartBtn);
+        StyleButton(reset_btn);
+        StyleTable(dgvInventory);
+     
+
+
+
     }
     private void RPG_Project_Load(object sender, EventArgs e)
     {
@@ -56,7 +67,7 @@ public partial class RPG_Project : Form
         dgvInventory.DataSource = _player.Inventory;
         dgvInventory.Columns.Add(new DataGridViewTextBoxColumn
         {
-            HeaderText = "Name",
+            HeaderText = "Items",
             Width = 197,
             DataPropertyName = "Description"
         });
@@ -70,7 +81,7 @@ public partial class RPG_Project : Form
         dgvQuests.DataSource = _player.Quests;
         dgvQuests.Columns.Add(new DataGridViewTextBoxColumn
         {
-            HeaderText = "Name",
+            HeaderText = "Quests",
             Width = 197,
             DataPropertyName = "Name"
         });
@@ -281,10 +292,6 @@ public partial class RPG_Project : Form
 
         // Refresh player's stats
         UpdatePlayerStats();
-
-        // Refresh player's inventory list
-
-        // Refresh player's quest list
 
         // Refresh player's weapons combobox
         UpdateWeaponListInUI();
@@ -637,7 +644,15 @@ public partial class RPG_Project : Form
             string weaponImagePath = $"Images/{selectedWeapon.Name.ToLower()}.png";
             //pictureBoxWeapon.Image = Image.FromFile(weaponImagePath);
             btnUseWeapon.Image = Image.FromFile(weaponImagePath);
+
+            string weaponName = selectedWeapon.Name.ToLower();
+
+            //if (weaponName == "rusty sword")
+            //{
+            //    PlaySound($"{weaponName}-draw");
+            //}
         }
+
 
     }
     private void label1_Click(object sender, EventArgs e)
@@ -740,6 +755,29 @@ public partial class RPG_Project : Form
     {
         var sound = new SoundPlayer($"Sounds/{filename}.wav");
         sound.Play();
+    }
+
+    private void panelPlayerControl_Paint(object sender, PaintEventArgs e)
+    {
+        ControlPaint.DrawBorder(e.Graphics, panelPlayerControl.ClientRectangle,
+           ColorTranslator.FromHtml("#B08B4F"), 1, ButtonBorderStyle.Solid,  
+           ColorTranslator.FromHtml("#B08B4F"), 1, ButtonBorderStyle.Solid,  
+           ColorTranslator.FromHtml("#B08B4F"), 1, ButtonBorderStyle.Solid,  
+           ColorTranslator.FromHtml("#B08B4F"), 1, ButtonBorderStyle.Solid); 
+    }
+    private void StyleButton(Button btn)
+    {
+        btn.FlatStyle = FlatStyle.Flat;
+        btn.FlatAppearance.BorderColor = ColorTranslator.FromHtml("#CFAF5E");
+        btn.FlatAppearance.BorderSize = 1;
+        btn.BackColor = ColorTranslator.FromHtml("#2D2212");
+        btn.ForeColor = ColorTranslator.FromHtml("#F7E28F");
+        btn.FlatAppearance.MouseOverBackColor = ColorTranslator.FromHtml("#3A2F1F");
+    }
+    private void StyleTable(DataGridView dvg)
+    {
+        //dvg.GridColor = ColorTranslator.FromHtml("#f7e28f");
+        dvg.DefaultCellStyle.ForeColor = ColorTranslator.FromHtml("#fef2cd");
     }
 }
 
