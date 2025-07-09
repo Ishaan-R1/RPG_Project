@@ -281,6 +281,8 @@ public partial class RPG_Project : Form
                 cboWeapons.Visible = false;
                 cboPotions.Visible = false;
                 btnUseWeapon.Visible = false;
+                panelPlayerControl.Visible = false;
+                lblAction.Visible = false;
                 btnUsePotion.Visible = false;
 
                 rtbMessages.AppendText("All " + defeatedMonsterName + "s are defeated." + Environment.NewLine);
@@ -294,6 +296,8 @@ public partial class RPG_Project : Form
             cboWeapons.Visible = false;
             cboPotions.Visible = false;
             btnUseWeapon.Visible = false;
+            panelPlayerControl.Visible = false;
+            lblAction.Visible = false;
             btnUsePotion.Visible = false;
         }
 
@@ -339,6 +343,8 @@ public partial class RPG_Project : Form
             // The player doesn't have any weapons, so hide the weapon combobox and "Use" button
             cboWeapons.Visible = false;
             btnUseWeapon.Visible = false;
+            panelPlayerControl.Visible = false;
+            lblAction.Visible = false;
         }
         else
         {
@@ -619,6 +625,8 @@ public partial class RPG_Project : Form
             {
                 cboWeapons.Visible = false;
                 btnUseWeapon.Visible = false;
+                panelPlayerControl.Visible = false;
+                lblAction.Visible = false;
             }
         }
         if (propertyChangedEventArgs.PropertyName == "Potions")
@@ -749,12 +757,9 @@ public partial class RPG_Project : Form
     }
     private void UpdateMonsterHPBar()
     {
-        hpProgressBar.Maximum = _currentMonster.MaximumHitPoints;
 
-        // Clamp value so it never goes below 0
+        // Ensure value doesn't go below 0
         int clampedHP = Math.Max(0, _currentMonster.CurrentHitPoints);
-
-        hpProgressBar.Value = clampedHP;
         labelMonsterHP.Text = $"HP: {clampedHP}/{_currentMonster.MaximumHitPoints}";
     }
     //PlaySound("sword");

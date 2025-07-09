@@ -29,11 +29,11 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RPG_Project));
-            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle5 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle6 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle7 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle8 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle9 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle10 = new DataGridViewCellStyle();
             label1 = new Label();
             label2 = new Label();
             label3 = new Label();
@@ -43,7 +43,7 @@
             lblExperience = new Label();
             label5 = new Label();
             lblLevel = new Label();
-            label6 = new Label();
+            lblAction = new Label();
             cboWeapons = new ComboBox();
             cboPotions = new ComboBox();
             btnUseWeapon = new Button();
@@ -60,7 +60,6 @@
             restartBtn = new Button();
             btnSouth = new Button();
             pictureBoxMonster = new PictureBox();
-            hpProgressBar = new ProgressBar();
             dgvInventory = new DataGridView();
             labelMonsterHP = new Label();
             lblMonstersRemaining = new Label();
@@ -165,16 +164,17 @@
             lblLevel.Size = new Size(0, 23);
             lblLevel.TabIndex = 8;
             // 
-            // label6
+            // lblAction
             // 
-            label6.AutoSize = true;
-            label6.FlatStyle = FlatStyle.Popup;
-            label6.ForeColor = SystemColors.HighlightText;
-            label6.Location = new Point(674, 698);
-            label6.Name = "label6";
-            label6.Size = new Size(94, 20);
-            label6.TabIndex = 9;
-            label6.Text = "Select action";
+            lblAction.AutoSize = true;
+            lblAction.FlatStyle = FlatStyle.Popup;
+            lblAction.Font = new Font("Garamond", 10.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblAction.ForeColor = Color.FromArgb(247, 226, 143);
+            lblAction.Location = new Point(713, 444);
+            lblAction.Name = "lblAction";
+            lblAction.Size = new Size(60, 21);
+            lblAction.TabIndex = 9;
+            lblAction.Text = "Action";
             // 
             // cboWeapons
             // 
@@ -232,7 +232,8 @@
             // btnNorth
             // 
             btnNorth.BackColor = Color.Black;
-            btnNorth.FlatStyle = FlatStyle.Popup;
+            btnNorth.FlatStyle = FlatStyle.Flat;
+            btnNorth.ForeColor = Color.FromArgb(207, 175, 94);
             btnNorth.Image = (Image)resources.GetObject("btnNorth.Image");
             btnNorth.Location = new Point(495, 450);
             btnNorth.Name = "btnNorth";
@@ -244,7 +245,8 @@
             // btnEast
             // 
             btnEast.BackColor = Color.Black;
-            btnEast.FlatStyle = FlatStyle.Popup;
+            btnEast.FlatStyle = FlatStyle.Flat;
+            btnEast.ForeColor = Color.FromArgb(207, 175, 94);
             btnEast.Image = (Image)resources.GetObject("btnEast.Image");
             btnEast.Location = new Point(565, 515);
             btnEast.Name = "btnEast";
@@ -257,7 +259,8 @@
             // btnWest
             // 
             btnWest.BackColor = Color.Black;
-            btnWest.FlatStyle = FlatStyle.Popup;
+            btnWest.FlatStyle = FlatStyle.Flat;
+            btnWest.ForeColor = Color.FromArgb(207, 175, 94);
             btnWest.Image = (Image)resources.GetObject("btnWest.Image");
             btnWest.Location = new Point(414, 515);
             btnWest.Name = "btnWest";
@@ -298,23 +301,23 @@
             dgvQuests.AllowUserToDeleteRows = false;
             dgvQuests.BackgroundColor = Color.FromArgb(26, 26, 26);
             dgvQuests.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = Color.FromArgb(26, 26, 26);
-            dataGridViewCellStyle1.Font = new Font("Segoe UI", 9F);
-            dataGridViewCellStyle1.ForeColor = Color.FromArgb(247, 226, 143);
-            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
-            dgvQuests.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle6.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle6.BackColor = Color.FromArgb(26, 26, 26);
+            dataGridViewCellStyle6.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle6.ForeColor = Color.FromArgb(247, 226, 143);
+            dataGridViewCellStyle6.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle6.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle6.WrapMode = DataGridViewTriState.True;
+            dgvQuests.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle6;
             dgvQuests.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = Color.FromArgb(26, 26, 26);
-            dataGridViewCellStyle2.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            dataGridViewCellStyle2.ForeColor = SystemColors.ControlLight;
-            dataGridViewCellStyle2.SelectionBackColor = Color.FromArgb(26, 26, 26);
-            dataGridViewCellStyle2.SelectionForeColor = Color.FromArgb(254, 242, 205);
-            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
-            dgvQuests.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle7.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle7.BackColor = Color.FromArgb(26, 26, 26);
+            dataGridViewCellStyle7.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            dataGridViewCellStyle7.ForeColor = SystemColors.ControlLight;
+            dataGridViewCellStyle7.SelectionBackColor = Color.FromArgb(26, 26, 26);
+            dataGridViewCellStyle7.SelectionForeColor = Color.FromArgb(254, 242, 205);
+            dataGridViewCellStyle7.WrapMode = DataGridViewTriState.False;
+            dgvQuests.DefaultCellStyle = dataGridViewCellStyle7;
             dgvQuests.EditMode = DataGridViewEditMode.EditProgrammatically;
             dgvQuests.Enabled = false;
             dgvQuests.EnableHeadersVisualStyles = false;
@@ -333,7 +336,7 @@
             // 
             reset_btn.FlatStyle = FlatStyle.Flat;
             reset_btn.ForeColor = Color.FromArgb(247, 226, 143);
-            reset_btn.Location = new Point(916, 689);
+            reset_btn.Location = new Point(916, 664);
             reset_btn.Name = "reset_btn";
             reset_btn.Size = new Size(94, 29);
             reset_btn.TabIndex = 22;
@@ -345,7 +348,7 @@
             // 
             btnStats.FlatStyle = FlatStyle.Flat;
             btnStats.ForeColor = Color.FromArgb(247, 226, 143);
-            btnStats.Location = new Point(376, 689);
+            btnStats.Location = new Point(414, 664);
             btnStats.Name = "btnStats";
             btnStats.Size = new Size(226, 29);
             btnStats.TabIndex = 23;
@@ -370,7 +373,7 @@
             // 
             restartBtn.FlatStyle = FlatStyle.Flat;
             restartBtn.ForeColor = Color.FromArgb(247, 226, 143);
-            restartBtn.Location = new Point(806, 689);
+            restartBtn.Location = new Point(806, 664);
             restartBtn.Name = "restartBtn";
             restartBtn.Size = new Size(94, 29);
             restartBtn.TabIndex = 25;
@@ -381,7 +384,8 @@
             // btnSouth
             // 
             btnSouth.BackColor = Color.Black;
-            btnSouth.FlatStyle = FlatStyle.Popup;
+            btnSouth.FlatStyle = FlatStyle.Flat;
+            btnSouth.ForeColor = Color.FromArgb(207, 175, 94);
             btnSouth.Image = (Image)resources.GetObject("btnSouth.Image");
             btnSouth.Location = new Point(495, 581);
             btnSouth.Name = "btnSouth";
@@ -400,38 +404,30 @@
             pictureBoxMonster.TabIndex = 26;
             pictureBoxMonster.TabStop = false;
             // 
-            // hpProgressBar
-            // 
-            hpProgressBar.ForeColor = Color.Red;
-            hpProgressBar.Location = new Point(264, 616);
-            hpProgressBar.Name = "hpProgressBar";
-            hpProgressBar.Size = new Size(150, 29);
-            hpProgressBar.TabIndex = 27;
-            // 
             // dgvInventory
             // 
             dgvInventory.AllowUserToAddRows = false;
             dgvInventory.AllowUserToDeleteRows = false;
             dgvInventory.BackgroundColor = Color.FromArgb(26, 26, 26);
             dgvInventory.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = Color.FromArgb(26, 26, 26);
-            dataGridViewCellStyle3.Font = new Font("Segoe UI", 9F);
-            dataGridViewCellStyle3.ForeColor = Color.FromArgb(247, 226, 143);
-            dataGridViewCellStyle3.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
-            dgvInventory.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle8.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle8.BackColor = Color.FromArgb(26, 26, 26);
+            dataGridViewCellStyle8.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle8.ForeColor = Color.FromArgb(247, 226, 143);
+            dataGridViewCellStyle8.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle8.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle8.WrapMode = DataGridViewTriState.True;
+            dgvInventory.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle8;
             dgvInventory.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = Color.FromArgb(26, 26, 26);
-            dataGridViewCellStyle4.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            dataGridViewCellStyle4.ForeColor = SystemColors.ControlLight;
-            dataGridViewCellStyle4.Padding = new Padding(5, 2, 5, 2);
-            dataGridViewCellStyle4.SelectionBackColor = Color.FromArgb(26, 26, 26);
-            dataGridViewCellStyle4.SelectionForeColor = Color.FromArgb(254, 242, 205);
-            dataGridViewCellStyle4.WrapMode = DataGridViewTriState.False;
-            dgvInventory.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle9.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle9.BackColor = Color.FromArgb(26, 26, 26);
+            dataGridViewCellStyle9.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            dataGridViewCellStyle9.ForeColor = SystemColors.ControlLight;
+            dataGridViewCellStyle9.Padding = new Padding(5, 2, 5, 2);
+            dataGridViewCellStyle9.SelectionBackColor = Color.FromArgb(26, 26, 26);
+            dataGridViewCellStyle9.SelectionForeColor = Color.FromArgb(254, 242, 205);
+            dataGridViewCellStyle9.WrapMode = DataGridViewTriState.False;
+            dgvInventory.DefaultCellStyle = dataGridViewCellStyle9;
             dgvInventory.EditMode = DataGridViewEditMode.EditProgrammatically;
             dgvInventory.Enabled = false;
             dgvInventory.EnableHeadersVisualStyles = false;
@@ -440,14 +436,14 @@
             dgvInventory.MultiSelect = false;
             dgvInventory.Name = "dgvInventory";
             dgvInventory.ReadOnly = true;
-            dataGridViewCellStyle5.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle5.BackColor = SystemColors.Control;
-            dataGridViewCellStyle5.Font = new Font("Segoe UI", 9F);
-            dataGridViewCellStyle5.ForeColor = Color.FromArgb(254, 242, 205);
-            dataGridViewCellStyle5.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle5.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle5.WrapMode = DataGridViewTriState.True;
-            dgvInventory.RowHeadersDefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle10.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle10.BackColor = SystemColors.Control;
+            dataGridViewCellStyle10.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle10.ForeColor = Color.FromArgb(254, 242, 205);
+            dataGridViewCellStyle10.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle10.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle10.WrapMode = DataGridViewTriState.True;
+            dgvInventory.RowHeadersDefaultCellStyle = dataGridViewCellStyle10;
             dgvInventory.RowHeadersVisible = false;
             dgvInventory.RowHeadersWidth = 51;
             dgvInventory.ScrollBars = ScrollBars.Vertical;
@@ -457,7 +453,7 @@
             // labelMonsterHP
             // 
             labelMonsterHP.AutoSize = true;
-            labelMonsterHP.Location = new Point(953, 396);
+            labelMonsterHP.Location = new Point(953, 393);
             labelMonsterHP.Name = "labelMonsterHP";
             labelMonsterHP.Size = new Size(57, 20);
             labelMonsterHP.TabIndex = 28;
@@ -468,7 +464,7 @@
             lblMonstersRemaining.AutoSize = true;
             lblMonstersRemaining.Font = new Font("Segoe UI", 10.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
             lblMonstersRemaining.ForeColor = Color.FromArgb(254, 242, 205);
-            lblMonstersRemaining.Location = new Point(765, 414);
+            lblMonstersRemaining.Location = new Point(765, 411);
             lblMonstersRemaining.Name = "lblMonstersRemaining";
             lblMonstersRemaining.Size = new Size(196, 25);
             lblMonstersRemaining.TabIndex = 29;
@@ -476,10 +472,10 @@
             // 
             // panelPlayerControl
             // 
-            panelPlayerControl.Location = new Point(60, 651);
+            panelPlayerControl.Location = new Point(702, 459);
             panelPlayerControl.Name = "panelPlayerControl";
             panelPlayerControl.Padding = new Padding(30);
-            panelPlayerControl.Size = new Size(310, 112);
+            panelPlayerControl.Size = new Size(222, 165);
             panelPlayerControl.TabIndex = 30;
             panelPlayerControl.Paint += panelPlayerControl_Paint;
             // 
@@ -488,8 +484,7 @@
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(38, 37, 37);
-            ClientSize = new Size(1025, 743);
-            Controls.Add(hpProgressBar);
+            ClientSize = new Size(1025, 705);
             Controls.Add(lblMonstersRemaining);
             Controls.Add(labelMonsterHP);
             Controls.Add(dgvInventory);
@@ -509,7 +504,7 @@
             Controls.Add(btnUseWeapon);
             Controls.Add(cboPotions);
             Controls.Add(cboWeapons);
-            Controls.Add(label6);
+            Controls.Add(lblAction);
             Controls.Add(lblLevel);
             Controls.Add(label5);
             Controls.Add(lblExperience);
@@ -543,7 +538,7 @@
         private Label lblExperience;
         private Label label5;
         private Label lblLevel;
-        private Label label6;
+        private Label lblAction;
         private ComboBox cboWeapons;
         private ComboBox cboPotions;
         private Button btnUseWeapon;
@@ -560,7 +555,6 @@
         private Button restartBtn;
         private Button btnSouth;
         private PictureBox pictureBoxMonster;
-        private ProgressBar hpProgressBar;
         private DataGridView dgvInventory;
         private Label labelMonsterHP;
         private Label lblMonstersRemaining;
