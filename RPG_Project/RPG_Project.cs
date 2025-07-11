@@ -271,6 +271,8 @@ public partial class RPG_Project : Form
                 cboWeapons.Visible = _player.Weapons.Any();
                 cboPotions.Visible = _player.Potions.Any();
                 btnUseWeapon.Visible = _player.Weapons.Any();
+                panelPlayerControl.Visible = true;
+                lblAction.Visible = true;
                 btnUsePotion.Visible = _player.Potions.Any();
             }
             else
@@ -606,14 +608,39 @@ public partial class RPG_Project : Form
 
         ScrollToBottomOfMessages();
     }
-    private void UpdateQuestLog()
+    private async void UpdateQuestLog()
     {
+        //lstQuestLog.Items.Clear();
+
+        //foreach (PlayerQuest playerQuest in _player.Quests)
+        //{
+        //    string status = playerQuest.IsCompleted ? " (Completed)" : " (In Progress)";
+        //    lstQuestLog.Items.Add($"{playerQuest.Details.Name}{status}");
+        //}
         lstQuestLog.Items.Clear();
+
+        pictureBoxQuest1Tick.Visible = false;
+        pictureBoxQuest2Tick.Visible = false;
 
         foreach (PlayerQuest playerQuest in _player.Quests)
         {
             string status = playerQuest.IsCompleted ? " (Completed)" : " (In Progress)";
             lstQuestLog.Items.Add($"{playerQuest.Details.Name}{status}");
+
+            if (playerQuest.Details.ID == 1 && playerQuest.IsCompleted)
+            {
+                //await Task.Delay(1000);  
+                //PlaySound("tick-sound");
+                pictureBoxQuest1Tick.Image = Image.FromFile("Images/tick.png");
+                pictureBoxQuest1Tick.Visible = true;
+            }
+            else if (playerQuest.Details.ID == 2 && playerQuest.IsCompleted)
+            {
+                //await Task.Delay(600);
+                //PlaySound("tick-sound");
+                pictureBoxQuest2Tick.Image = Image.FromFile("Images/tick.png");
+                pictureBoxQuest2Tick.Visible = true;
+            }
         }
     }
     private void PlayerOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
@@ -795,7 +822,7 @@ public partial class RPG_Project : Form
     }
     private void StyleTable(DataGridView dvg)
     {
-        //dvg.GridColor = ColorTranslator.FromHtml("#f7e28f");
+        dvg.GridColor = ColorTranslator.FromHtml("#2D2212");
         dvg.DefaultCellStyle.ForeColor = ColorTranslator.FromHtml("#fef2cd");
     }
 }

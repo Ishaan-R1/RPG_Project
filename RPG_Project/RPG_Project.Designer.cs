@@ -64,9 +64,13 @@
             labelMonsterHP = new Label();
             lblMonstersRemaining = new Label();
             panelPlayerControl = new Panel();
+            pictureBoxQuest1Tick = new PictureBox();
+            pictureBoxQuest2Tick = new PictureBox();
             ((System.ComponentModel.ISupportInitialize)dgvQuests).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBoxMonster).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dgvInventory).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBoxQuest1Tick).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBoxQuest2Tick).BeginInit();
             SuspendLayout();
             // 
             // label1
@@ -168,11 +172,11 @@
             // 
             lblAction.AutoSize = true;
             lblAction.FlatStyle = FlatStyle.Popup;
-            lblAction.Font = new Font("Garamond", 10.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblAction.Font = new Font("Garamond", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             lblAction.ForeColor = Color.FromArgb(247, 226, 143);
             lblAction.Location = new Point(713, 444);
             lblAction.Name = "lblAction";
-            lblAction.Size = new Size(60, 21);
+            lblAction.Size = new Size(65, 22);
             lblAction.TabIndex = 9;
             lblAction.Text = "Action";
             // 
@@ -204,6 +208,7 @@
             // 
             btnUseWeapon.BackColor = Color.DarkRed;
             btnUseWeapon.FlatStyle = FlatStyle.Flat;
+            btnUseWeapon.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
             btnUseWeapon.ForeColor = Color.FromArgb(247, 226, 143);
             btnUseWeapon.Image = (Image)resources.GetObject("btnUseWeapon.Image");
             btnUseWeapon.ImageAlign = ContentAlignment.MiddleLeft;
@@ -218,6 +223,7 @@
             // btnUsePotion
             // 
             btnUsePotion.FlatStyle = FlatStyle.Flat;
+            btnUsePotion.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
             btnUsePotion.ForeColor = Color.FromArgb(247, 226, 143);
             btnUsePotion.Image = (Image)resources.GetObject("btnUsePotion.Image");
             btnUsePotion.ImageAlign = ContentAlignment.MiddleLeft;
@@ -303,7 +309,7 @@
             dgvQuests.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
             dataGridViewCellStyle6.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle6.BackColor = Color.FromArgb(26, 26, 26);
-            dataGridViewCellStyle6.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle6.Font = new Font("Segoe UI Semibold", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
             dataGridViewCellStyle6.ForeColor = Color.FromArgb(247, 226, 143);
             dataGridViewCellStyle6.SelectionBackColor = SystemColors.Highlight;
             dataGridViewCellStyle6.SelectionForeColor = SystemColors.HighlightText;
@@ -412,7 +418,7 @@
             dgvInventory.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
             dataGridViewCellStyle8.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle8.BackColor = Color.FromArgb(26, 26, 26);
-            dataGridViewCellStyle8.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle8.Font = new Font("Segoe UI Semibold", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
             dataGridViewCellStyle8.ForeColor = Color.FromArgb(247, 226, 143);
             dataGridViewCellStyle8.SelectionBackColor = SystemColors.Highlight;
             dataGridViewCellStyle8.SelectionForeColor = SystemColors.HighlightText;
@@ -479,12 +485,32 @@
             panelPlayerControl.TabIndex = 30;
             panelPlayerControl.Paint += panelPlayerControl_Paint;
             // 
+            // pictureBoxQuest1Tick
+            // 
+            pictureBoxQuest1Tick.Location = new Point(259, 450);
+            pictureBoxQuest1Tick.Name = "pictureBoxQuest1Tick";
+            pictureBoxQuest1Tick.Size = new Size(27, 28);
+            pictureBoxQuest1Tick.SizeMode = PictureBoxSizeMode.Zoom;
+            pictureBoxQuest1Tick.TabIndex = 31;
+            pictureBoxQuest1Tick.TabStop = false;
+            // 
+            // pictureBoxQuest2Tick
+            // 
+            pictureBoxQuest2Tick.Location = new Point(259, 486);
+            pictureBoxQuest2Tick.Name = "pictureBoxQuest2Tick";
+            pictureBoxQuest2Tick.Size = new Size(27, 28);
+            pictureBoxQuest2Tick.SizeMode = PictureBoxSizeMode.Zoom;
+            pictureBoxQuest2Tick.TabIndex = 32;
+            pictureBoxQuest2Tick.TabStop = false;
+            // 
             // RPG_Project
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(38, 37, 37);
             ClientSize = new Size(1025, 705);
+            Controls.Add(pictureBoxQuest2Tick);
+            Controls.Add(pictureBoxQuest1Tick);
             Controls.Add(lblMonstersRemaining);
             Controls.Add(labelMonsterHP);
             Controls.Add(dgvInventory);
@@ -523,6 +549,8 @@
             ((System.ComponentModel.ISupportInitialize)dgvQuests).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBoxMonster).EndInit();
             ((System.ComponentModel.ISupportInitialize)dgvInventory).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBoxQuest1Tick).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBoxQuest2Tick).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -559,5 +587,7 @@
         private Label labelMonsterHP;
         private Label lblMonstersRemaining;
         private Panel panelPlayerControl;
+        private PictureBox pictureBoxQuest1Tick;
+        private PictureBox pictureBoxQuest2Tick;
     }
 }
