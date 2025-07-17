@@ -32,6 +32,7 @@ public partial class RPG_Project : Form
         StyleDirectionBtns(btnEast);
         StyleDirectionBtns(btnSouth);
         StyleDirectionBtns(btnWest);
+        restartBtn.Visible = false;
 
 
 
@@ -462,7 +463,7 @@ public partial class RPG_Project : Form
             _player.TotalFightsWon++;
             _player.TotalMonstersDefeated++;
 
-            if (_player.TotalMonstersDefeated >= 300)
+            if (_player.TotalMonstersDefeated >= 30)
             {
                 rtbMessages.AppendText("You defeated the all monsters!");
                 MessageBox.Show("You have defeated all monsters and brought peace to the land. You win!");
